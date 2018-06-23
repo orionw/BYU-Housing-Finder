@@ -4,9 +4,12 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="marriage">Type</string>
-    <string name="distance">Distance</string>
-    <string name="price">Price</string>
-    <string name="reviews">Reviews</string>
+    <string name="distance"><font size="13">Distance</font></string>
+    <string name="price"><font size="13">Price</font></string>
+    <string name="reviews"><font size="15">Reviews</font></string>
+    <string name="search"><font size="15">Search</font></string>
+    <string name="search_keywords"><font size="18">Apartment Name</font></string>
+
 
     <string-array name="married_array">
         <item>Single</item>
@@ -33,6 +36,7 @@
         <item>.8</item>
     </string-array>
     <string-array name="reviews_array">
+        <item></item>
         <item>1 Stars</item>
         <item>2 Stars</item>
         <item>3 Stars</item>

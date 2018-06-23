@@ -9,7 +9,8 @@
     tools:layout_editor_absoluteY="25dp">
 
     <Spinner
-        android:id="@+id/spinner0"
+        android:id="@+id/marital"
+        android:textSize="1sp"
         android:layout_width="78dp"
         android:layout_height="38dp"
         android:layout_marginTop="8dp"
@@ -17,12 +18,13 @@
         android:padding="10dp"
         android:prompt="@string/marriage"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintEnd_toEndOf="@+id/search_button"
+        app:layout_constraintTop_toBottomOf="@+id/apartment_name"
         app:layout_constraintVertical_bias="0.05" />
 
-    <Spinner
-        android:id="@+id/spinner2"
+    <EditText
+        android:hint="@string/distance"
+        android:id="@+id/distance"
         android:layout_width="72dp"
         android:layout_height="38dp"
         android:layout_marginEnd="8dp"
@@ -32,15 +34,17 @@
         android:layout_marginTop="8dp"
         android:background="#FFFFFF"
         android:padding="10dp"
-        android:prompt="@string/marriage"
+        android:inputType="numberDecimal"
+        android:prompt="@string/distance"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/spinner0"
-        app:layout_constraintStart_toEndOf="@+id/spinner1"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintEnd_toStartOf="@+id/marital"
+        app:layout_constraintStart_toEndOf="@+id/price"
+        app:layout_constraintTop_toBottomOf="@+id/apartment_name"
         app:layout_constraintVertical_bias="0.05" />
 
-    <Spinner
-        android:id="@+id/spinner1"
+    <EditText
+        android:hint="@string/price"
+        android:id="@+id/price"
         android:layout_width="72dp"
         android:layout_height="38dp"
         android:layout_marginLeft="8dp"
@@ -48,15 +52,15 @@
         android:layout_marginTop="8dp"
         android:background="#FFFFFF"
         android:padding="10dp"
-        android:prompt="@string/marriage"
+        android:inputType="numberSigned"
+        android:prompt="@string/price"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/spinner3"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintStart_toEndOf="@+id/reviews"
+        app:layout_constraintTop_toBottomOf="@+id/apartment_name"
         app:layout_constraintVertical_bias="0.05" />
 
     <EditText
-        android:id="@+id/editText"
-        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:id="@+id/apartment_name"
         android:layout_width="205dp"
         android:layout_height="43dp"
         android:layout_marginEnd="8dp"
@@ -65,41 +69,44 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="208dp"
         android:background="@color/bluetrans"
+        android:hint="@string/search_keywords"
         android:ems="10"
         android:inputType="textAutoCorrect"
         android:padding="10dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/search_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/search_button"
+        android:hint="@string/search"
         android:layout_width="81dp"
         android:layout_height="59dp"
-
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="200dp"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toEndOf="@+id/editText"
+        app:layout_constraintStart_toEndOf="@+id/apartment_name"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        android:id="@+id/spinner3"
+        android:id="@+id/reviews"
+        android:hint="@string/reviews"
+        android:spinnerMode="dialog"
         android:layout_width="64dp"
         android:layout_height="38dp"
         android:layout_marginTop="8dp"
         android:background="#FFFFFF"
         android:padding="10dp"
-        android:prompt="@string/marriage"
+        android:prompt="@string/reviews"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/editText"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintStart_toStartOf="@+id/apartment_name"
+        app:layout_constraintTop_toBottomOf="@+id/apartment_name"
         app:layout_constraintVertical_bias="0.05" />
 
 </android.support.constraint.ConstraintLayout>
