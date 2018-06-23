@@ -3,4 +3,40 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="marriage">Type</string>
+    <string name="distance">Distance</string>
+    <string name="price">Price</string>
+    <string name="reviews">Reviews</string>
+
+    <string-array name="married_array">
+        <item>Single</item>
+        <item>Married</item>
+    </string-array>
+    <string-array name="Price_Array">
+        <item>300</item>
+        <item>350</item>
+        <item>400</item>
+        <item>450</item>
+        <item>500</item>
+        <item>550</item>
+        <item>600</item>
+        <item>650</item>
+    </string-array>
+    <string-array name="distance_array">
+        <item>.1</item>
+        <item>.2</item>
+        <item>.3</item>
+        <item>.4</item>
+        <item>.5</item>
+        <item>.6</item>
+        <item>.7</item>
+        <item>.8</item>
+    </string-array>
+    <string-array name="reviews_array">
+        <item>1 Stars</item>
+        <item>2 Stars</item>
+        <item>3 Stars</item>
+        <item>4 Stars</item>
+        <item>5 Stars</item>
+    </string-array>
 </resources>
