@@ -7,9 +7,29 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/tvAnimalName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"/>
+    android:id="@+id/apartmentComplexName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="20sp"/>
+    <!--<TextView-->
+        <!--android:id="@+id/apartment_complex_distance"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:textSize="14sp"/>-->
+
+    <TextView
+        android:id="@+id/apartment_complex_price"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAlignment="viewEnd"
+        android:layout_gravity="end"
+        android:textSize="14sp"/>
+    <!--eventually add a picture here-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
 
 </LinearLayout>

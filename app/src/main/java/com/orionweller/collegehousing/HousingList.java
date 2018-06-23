@@ -2,6 +2,7 @@ package com.orionweller.collegehousing;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,6 +17,7 @@ public class HousingList extends AppCompatActivity implements RecyclerViewAdapte
 
     RecyclerViewAdapter adapter;
     private ListView listView;
+    DividerItemDecoration mDividerItemDecoration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,8 @@ public class HousingList extends AppCompatActivity implements RecyclerViewAdapte
         adapter = new RecyclerViewAdapter(this, scoreList);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
+        mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),1);
+        recyclerView.addItemDecoration(mDividerItemDecoration);
 
 
     }

@@ -36,7 +36,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         //holder.mTextView.setText(mDataset[position]);
         String apartment_name = mData.get(position)[0];
         String apartment_price = mData.get(position)[1];
-        holder.myTextView.setText(apartment_name);
+        String apartment_distance = mData.get(position)[2];
+        holder.ComplexName.setText(apartment_name);
+        holder.ComplexPrice.setText(apartment_price);
+        //holder.ComplexDistance.setText(apartment_distance);
     }
 
     // total number of rows
@@ -48,11 +51,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
+        TextView ComplexName;
+        TextView ComplexPrice;
+        TextView ComplexDistance;
 
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.tvAnimalName);
+            ComplexName = itemView.findViewById(R.id.apartmentComplexName);
+            ComplexPrice = itemView.findViewById(R.id.apartment_complex_price);
+            //ComplexDistance = itemView.findViewById(R.id.apartment_complex_distance);
             itemView.setOnClickListener(this);
         }
 
