@@ -11,12 +11,12 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private List<String> mData;
+    private List<String[]> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    RecyclerViewAdapter(Context context, List<String> data) {
+    RecyclerViewAdapter(Context context, List<String[]> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -31,8 +31,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String animal = mData.get(position);
-        holder.myTextView.setText(animal);
+        // - get element from your dataset at this position
+        // - replace the contents of the view with that element
+        //holder.mTextView.setText(mDataset[position]);
+        String apartment_name = mData.get(position)[0];
+        String apartment_price = mData.get(position)[1];
+        holder.myTextView.setText(apartment_name);
     }
 
     // total number of rows
@@ -60,7 +64,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     // convenience method for getting data at click position
     String getItem(int id) {
-        return mData.get(id);
+        return mData.get(id)[0];
     }
 
     // allows clicks events to be caught
