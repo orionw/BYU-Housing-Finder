@@ -33,10 +33,6 @@ public class HousingList extends AppCompatActivity implements RecyclerViewAdapte
         animalNames.add("Goat");*/
 
 
-        InputStream inputStream = getResources().openRawResource(R.raw.apartments);
-        CSVFile csvFile = new CSVFile(inputStream);
-        List scoreList = csvFile.read();
-
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.rvAnimals);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

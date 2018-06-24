@@ -1,5 +1,6 @@
 package com.orionweller.collegehousing;
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         adapter_reviews.setDropDownViewResource(layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner_reviews.setAdapter(adapter_reviews);
+
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "apartments").build();
 
         Button btn = (Button)findViewById(R.id.search_button);
 
