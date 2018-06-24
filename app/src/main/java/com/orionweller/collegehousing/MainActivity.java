@@ -1,6 +1,8 @@
 package com.orionweller.collegehousing;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,13 +11,16 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.R.layout;
 
+import java.io.IOException;
+
 
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        DataBaseHelper db;
+         Cursor apartments;
 
         Spinner spinner_marriage = (Spinner) findViewById(R.id.marital);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -34,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         adapter_reviews.setDropDownViewResource(layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner_reviews.setAdapter(adapter_reviews);
+
+        db = new DataBaseHelper(this);
+        apartments = db.getApartments();
+
 
         Button btn = (Button)findViewById(R.id.search_button);
 

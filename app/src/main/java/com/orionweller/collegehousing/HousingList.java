@@ -1,13 +1,21 @@
 package com.orionweller.collegehousing;
 
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
+
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -36,6 +44,18 @@ public class HousingList extends AppCompatActivity implements RecyclerViewAdapte
         InputStream inputStream = getResources().openRawResource(R.raw.apartments);
         CSVFile csvFile = new CSVFile(inputStream);
         List scoreList = csvFile.read();
+
+
+
+        // query and list of apartments
+        List apartments = new ArrayList();
+        String selectQuery = "SELECT  * FROM " + "Apartments";
+
+        //Get the database and send the query, returns a list/dict?
+        DataBaseHelper helper = new DataBaseHelper(this);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+        Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(c));
 
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.rvAnimals);
