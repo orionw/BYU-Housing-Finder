@@ -5,13 +5,18 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.R.layout;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import com.orionweller.collegehousing.HousingList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         DataBaseHelper db;
          Cursor apartments;
 
-        Spinner spinner_marriage = (Spinner) findViewById(R.id.marital);
+        final Spinner spinner_marriage = (Spinner) findViewById(R.id.marital);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter_marriage = ArrayAdapter.createFromResource(this,
                 R.array.married_array, R.layout.spinner_item);
@@ -31,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         // Apply the adapter to the spinner
         spinner_marriage.setAdapter(adapter_marriage);
 
-        Spinner spinner_reviews = (Spinner) findViewById(R.id.reviews);
+        final Spinner spinner_reviews = (Spinner) findViewById(R.id.reviews);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter_reviews = ArrayAdapter.createFromResource(this,
                 R.array.reviews_array, layout.simple_spinner_item);
@@ -49,7 +54,57 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, HousingList.class));
+
+                String type = spinner_marriage.getSelectedItem().toString();
+
+                String reviews = spinner_reviews.getSelectedItem().toString();
+
+                EditText priceEditText = (EditText)findViewById(R.id.price);
+                String price      =  priceEditText.getText().toString();
+
+                EditText distanceEditText = (EditText)findViewById(R.id.distance);
+                String distance      =  distanceEditText.getText().toString();
+
+                EditText apartmentEditText = (EditText)findViewById(R.id.apartment_name);
+                String apartment      =  apartmentEditText.getText().toString();
+
+                boolean andFlag = false;
+                // TODO add WHERE clause back in when type goes in db
+                String sqlQuery = "SELECT * FROM apartments  "  ;
+                if (!TextUtils.isEmpty(apartment)) {
+                    sqlQuery += "name=" + apartment;
+                    andFlag = true;
+                }
+                if (!TextUtils.isEmpty(price)) {
+                    if (andFlag)
+                        sqlQuery += " AND price<" + price;
+                    else {
+                        sqlQuery += " price<" + price;
+                        andFlag = true;
+                    }
+                }
+
+                if (!TextUtils.isEmpty(distance)) {
+                    if (andFlag)
+                        sqlQuery += " AND distance<" + distance;
+                    else {
+                        sqlQuery += " distance<" + distance;
+                        andFlag = true;
+                    }
+                }
+
+//                if (andFlag)
+//                    sqlQuery += " AND type=" + type;
+//                else {
+//                    sqlQuery += " type=" + type;
+//                }
+                if (!TextUtils.isEmpty(reviews)) {
+                    sqlQuery += " AND reviews=" + reviews;
+                }
+
+                Intent intent = new Intent(MainActivity.this, HousingList.class);
+                intent.putExtra("sqlQuery", sqlQuery);
+                startActivity(intent);
             }
         });
 

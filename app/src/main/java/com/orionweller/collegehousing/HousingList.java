@@ -1,5 +1,6 @@
 package com.orionweller.collegehousing;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,6 +20,7 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class HousingList extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener {
@@ -31,6 +33,12 @@ public class HousingList extends AppCompatActivity implements RecyclerViewAdapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.housing_list_view);
+
+        Intent intent = getIntent();
+        String selectQuery;
+        selectQuery = intent.getExtras().getString("sqlQuery");
+        Log.v("sqlQuery", selectQuery);
+
 /*
         // data to populate the RecyclerView with
         ArrayList<String> animalNames = new ArrayList<>();
@@ -49,13 +57,16 @@ public class HousingList extends AppCompatActivity implements RecyclerViewAdapte
 
         // query and list of apartments
         List apartments = new ArrayList();
-        String selectQuery = "SELECT  * FROM " + "Apartments";
 
         //Get the database and send the query, returns a list/dict?
         DataBaseHelper helper = new DataBaseHelper(this);
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
         Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(c));
+        // TODO change from arrayList to list[] to populate recyclerView
+
+
+        // TODO make list look better (see other app)
 
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.rvAnimals);
