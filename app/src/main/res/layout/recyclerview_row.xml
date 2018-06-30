@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="10dp">
+    android:padding="6dip">
 
-    <TextView
-    android:id="@+id/apartmentComplexName"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textSize="20sp"/>
-    <!--<TextView-->
-        <!--android:id="@+id/apartment_complex_distance"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:textSize="14sp"/>-->
-
-    <TextView
-        android:id="@+id/apartment_complex_price"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textAlignment="viewEnd"
-        android:layout_gravity="end"
-        android:textSize="14sp"/>
-    <!--eventually add a picture here-->
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_alignParentLeft="true"
+        android:id="@+id/image"
+        android:layout_width="250px"
+        android:layout_height="250px" />
 
+    <TextView
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:textStyle="bold"
+        android:textSize="14dp"
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
+    <TextView
+        android:id="@+id/address"
+        android:layout_alignParentRight="true"
+        android:textStyle="italic"
+        android:layout_below="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/price"
+        android:layout_alignParentRight="true"
+        android:textStyle="italic"
+        android:layout_below="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

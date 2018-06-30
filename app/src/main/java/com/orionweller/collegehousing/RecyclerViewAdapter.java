@@ -17,6 +17,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Cursor mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private AdapterListener mListener;
 
     // data is passed into the constructor
     RecyclerViewAdapter(Context context, Cursor data) {
@@ -47,13 +48,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         // get the info we need
         String apartment_name = mData.getString(name_index);
-        String apartment_price = mData.getString(price_index);
-        String apartment_distance = mData.getString(distance_index);
+        String apartment_price = "$" + mData.getString(price_index) + " a month";
+        String apartment_distance = mData.getString(distance_index) + " miles from campus";
 
         // set the layout
         holder.ComplexName.setText(apartment_name);
         holder.ComplexPrice.setText(apartment_price);
-        //holder.ComplexDistance.setText(apartment_distance);
+        holder.ComplexDistance.setText(apartment_distance);
     }
 
     // total number of rows
@@ -71,9 +72,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         ViewHolder(View itemView) {
             super(itemView);
-            ComplexName = itemView.findViewById(R.id.apartmentComplexName);
-            ComplexPrice = itemView.findViewById(R.id.apartment_complex_price);
-            //ComplexDistance = itemView.findViewById(R.id.apartment_complex_distance);
+            ComplexName = itemView.findViewById(R.id.title);
+            ComplexPrice = itemView.findViewById(R.id.price);
+            ComplexDistance = itemView.findViewById(R.id.address);
             itemView.setOnClickListener(this);
         }
 
@@ -95,9 +96,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.mClickListener = itemClickListener;
     }
 
+    public void setAdapterListener(AdapterListener listener) {
+        mListener = listener;
+    }
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
+
 }
 
