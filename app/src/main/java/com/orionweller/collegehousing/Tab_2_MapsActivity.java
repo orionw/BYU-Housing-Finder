@@ -84,7 +84,7 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
+//        LatLng sydney = new LatLng(-34, 151);
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setOnMarkerClickListener(this);
@@ -104,22 +104,23 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
         if (null != locationAvailability && locationAvailability.isLocationAvailable()) {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient); // 3
 
+            LatLng BYU = new LatLng(40.251782, -111.649356);
+
             if (mLastLocation != null) {    // 4
                 LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation
                         .getLongitude());
-                placeMarkerOnMap(currentLocation);
+                placeMarkerOnMap(BYU);
                 Log.d("SetUp", "I'm in setUpMap: ");
 
-                // TODO make all locations appear
                 setAllLocations();
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(BYU, 12));
             }
         }
     }
 
     protected void placeMarkerOnMap(LatLng location) {
         MarkerOptions markerOptions = new MarkerOptions().position(location); //1
-        String titleStr = getAddress(location);
+        String titleStr = "BYU";
         markerOptions.title(titleStr);
 
         mMap.addMarker(markerOptions); //2
@@ -238,8 +239,8 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
             location.getLatitude();
             location.getLongitude();
 
-            p1 = new LatLng((double) (location.getLatitude() * 1E6),
-                    (double) (location.getLongitude() * 1E6));
+            p1 = new LatLng((double) (location.getLatitude()),
+                    (double) (location.getLongitude()));
 
             return p1;
         }
