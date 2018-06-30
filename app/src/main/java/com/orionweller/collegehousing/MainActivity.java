@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String type = spinner_marriage.getSelectedItem().toString();
 
-                String reviews = spinner_reviews.getSelectedItem().toString();
+                String people = spinner_reviews.getSelectedItem().toString();
 
                 EditText priceEditText = (EditText)findViewById(R.id.price);
                 String price      =  priceEditText.getText().toString();
@@ -68,39 +68,8 @@ public class MainActivity extends AppCompatActivity {
                 EditText apartmentEditText = (EditText)findViewById(R.id.apartment_name);
                 String apartment      =  apartmentEditText.getText().toString();
 
-                boolean andFlag = false;
-                // TODO add WHERE clause back in when type goes in db
-                String sqlQuery = "SELECT * FROM apartments  "  ;
-                if (!TextUtils.isEmpty(apartment)) {
-                    sqlQuery += "name=" + apartment;
-                    andFlag = true;
-                }
-                if (!TextUtils.isEmpty(price)) {
-                    if (andFlag)
-                        sqlQuery += " AND price<" + price;
-                    else {
-                        sqlQuery += " price<" + price;
-                        andFlag = true;
-                    }
-                }
 
-                if (!TextUtils.isEmpty(distance)) {
-                    if (andFlag)
-                        sqlQuery += " AND distance<" + distance;
-                    else {
-                        sqlQuery += " distance<" + distance;
-                        andFlag = true;
-                    }
-                }
-
-//                if (andFlag)
-//                    sqlQuery += " AND type=" + type;
-//                else {
-//                    sqlQuery += " type=" + type;
-//                }
-                if (!TextUtils.isEmpty(reviews)) {
-                    sqlQuery += " AND reviews=" + reviews;
-                }
+                String sqlQuery = get_sql_query(apartment, price, type, people, distance);
 
                 Intent intent = new Intent(MainActivity.this, HousingList.class);
                 intent.putExtra("sqlQuery", sqlQuery);
@@ -111,5 +80,48 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+        public String get_sql_query(String apartment, String price, String type, String people, String distance) {
 
+            // flag is used to determine where to put AND statements
+            boolean andFlag = false;
+
+            // base query
+            String sqlQuery = "SELECT * FROM apartments1 WHERE ";
+
+            if (!TextUtils.isEmpty(apartment)) {
+                // use LIKE to get in any order and caps/not caps
+                sqlQuery += "name LIKE \'%" + apartment + "%\'";
+                andFlag = true;
+            }
+
+            if (!TextUtils.isEmpty(price)) {
+                if (andFlag)
+                    sqlQuery += " AND price<" + price;
+                else {
+                    sqlQuery += " price<" + price;
+                    andFlag = true;
+                }
+            }
+
+            if (!TextUtils.isEmpty(distance)) {
+                if (andFlag)
+                    sqlQuery += " AND distance<" + distance;
+                else {
+                    sqlQuery += " distance<" + distance;
+                    andFlag = true;
+                }
+            }
+
+            if (andFlag)
+                sqlQuery += " AND type=\"" + type + "\"";
+            else {
+                sqlQuery += " type=\"" + type + "\"";
+            }
+
+            if (!TextUtils.isEmpty(people)) {
+                sqlQuery += " AND people=" + people;
+            }
+
+            return sqlQuery;
+        }
 }

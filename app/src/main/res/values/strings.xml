@@ -12,8 +12,8 @@
 
 
     <string-array name="married_array">
-        <item>Single</item>
-        <item>Married</item>
+        <item>single</item>
+        <item>married</item>
     </string-array>
     <string-array name="Price_Array">
         <item>300</item>

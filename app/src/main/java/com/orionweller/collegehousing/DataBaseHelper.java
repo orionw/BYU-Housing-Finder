@@ -30,7 +30,7 @@ public class DataBaseHelper extends SQLiteAssetHelper {
 
         //String [] sqlSelect = {"0 _id", "FirstName", "LastName"};
         String []  sqlSelect = {"*"};
-        String sqlTables = "Apartments";
+        String sqlTables = "Apartments1";
 
         qb.setTables(sqlTables);
         Cursor c = qb.query(db, sqlSelect, null, null,
