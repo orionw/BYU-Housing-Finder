@@ -1,22 +1,25 @@
 package com.orionweller.collegehousing;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private List<String[]> mData;
+    // using a cursor is kinda ugly but it saves space and reduces complexity in the long run
+    private Cursor mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    RecyclerViewAdapter(Context context, List<String[]> data) {
+    RecyclerViewAdapter(Context context, Cursor data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -33,10 +36,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        //holder.mTextView.setText(mDataset[position]);
-        String apartment_name = mData.get(position)[0];
-        String apartment_price = mData.get(position)[1];
-        String apartment_distance = mData.get(position)[2];
+
+        //  Move the cursor to the current row
+        mData.moveToPosition(position);
+
+        // find the index of the columns we need
+        int name_index = mData.getColumnIndex("name");
+        int price_index = mData.getColumnIndex("price");
+        int distance_index = mData.getColumnIndex("distance");
+
+        // get the info we need
+        String apartment_name = mData.getString(name_index);
+        String apartment_price = mData.getString(price_index);
+        String apartment_distance = mData.getString(distance_index);
+
+        // set the layout
         holder.ComplexName.setText(apartment_name);
         holder.ComplexPrice.setText(apartment_price);
         //holder.ComplexDistance.setText(apartment_distance);
@@ -45,7 +59,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // total number of rows
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mData.getCount();
     }
 
 
@@ -71,7 +85,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     // convenience method for getting data at click position
     String getItem(int id) {
-        return mData.get(id)[0];
+        mData.moveToPosition((id));
+        int name_index = mData.getColumnIndex("name");
+        return mData.getString(name_index);
     }
 
     // allows clicks events to be caught

@@ -46,17 +46,13 @@ public class HousingList extends AppCompatActivity implements RecyclerViewAdapte
         animalNames.add("Cow");
         animalNames.add("Camel");
         animalNames.add("Sheep");
-        animalNames.add("Goat");*/
+//        animalNames.add("Goat");*/
+//
+//          This was the old way of reading from a CSV
+//        InputStream inputStream = getResources().openRawResource(R.raw.apartments);
+//        CSVFile csvFile = new CSVFile(inputStream);
+//        List scoreList = csvFile.read();
 
-
-        InputStream inputStream = getResources().openRawResource(R.raw.apartments);
-        CSVFile csvFile = new CSVFile(inputStream);
-        List scoreList = csvFile.read();
-
-
-
-        // query and list of apartments
-        List apartments = new ArrayList();
 
         //Get the database and send the query, returns a list/dict?
         DataBaseHelper helper = new DataBaseHelper(this);
@@ -65,19 +61,35 @@ public class HousingList extends AppCompatActivity implements RecyclerViewAdapte
         Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(c));
         // TODO change from arrayList to list[] to populate recyclerView
 
+        List apartmentList = get_list_from_query(c);
 
         // TODO make list look better (see other app)
 
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.rvAnimals);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecyclerViewAdapter(this, scoreList);
+        adapter = new RecyclerViewAdapter(this, c);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),1);
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
 
+    }
+
+    private List get_list_from_query(Cursor mCursor) {
+        // Don't think I'm going to use this code but keeping it in case for a sec
+        List apartmentList = new ArrayList<String>();
+        mCursor.moveToFirst();
+        while(!mCursor.isAfterLast()) {
+            apartmentList.add(mCursor.getString(1)); //add the item
+            apartmentList.add(mCursor.getString(1)); //add the item
+            apartmentList.add(mCursor.getString(1)); //add the item
+
+            mCursor.moveToNext();
+        }
+        Log.d("array to list", apartmentList.toString());
+        return apartmentList;
     }
 
     @Override
