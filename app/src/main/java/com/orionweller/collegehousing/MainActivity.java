@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String sqlQuery = get_sql_query(apartment, price, type, people, distance);
 
-                Intent intent = new Intent(MainActivity.this, TabView.class);
+                Intent intent = new Intent(MainActivity.this, ApartmentTabView.class);
                 intent.putExtra("sqlQuery", sqlQuery);
                 startActivity(intent);
             }

@@ -14,10 +14,11 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabView extends AppCompatActivity {
+public class ApartmentTabView extends AppCompatActivity {
 
     // will contain the results of the SQL query
     public static Cursor c;
+    public static ArrayList<String> apartmentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,9 @@ public class TabView extends AppCompatActivity {
         c = db.rawQuery(selectQuery, null);
         Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(c));
 
-//        Decided not to implement this method but will leave it
-//        List apartmentList = get_list_from_query(c);
+        // Get list of names and addresses
+
+        apartmentList = get_list_from_query(c);
 
         // Set up tabs
         Toolbar toolbar ;
@@ -84,19 +86,21 @@ public class TabView extends AppCompatActivity {
         });
     }
 
-    private List get_list_from_query(Cursor mCursor) {
+    private ArrayList<String> get_list_from_query(Cursor mCursor) {
         // Don't think I'm going to use this code but keeping it in case for a sec
-        List apartmentList = new ArrayList<String>();
-        mCursor.moveToFirst();
-        while(!mCursor.isAfterLast()) {
-            apartmentList.add(mCursor.getString(1)); //add the item
-            apartmentList.add(mCursor.getString(1)); //add the item
-            apartmentList.add(mCursor.getString(1)); //add the item
+        ArrayList builder = new ArrayList<String>();
 
+        mCursor.moveToFirst();
+        int name_index = mCursor.getColumnIndex("name");
+        int address_index = mCursor.getColumnIndex("address");
+
+        while(!mCursor.isAfterLast()) {
+            builder.add(mCursor.getString(name_index)); //add the item
+            builder.add(mCursor.getString(address_index)); //add the item
             mCursor.moveToNext();
         }
-        Log.d("array to list", apartmentList.toString());
-        return apartmentList;
+        Log.d("array to list", builder.toString());
+        return builder;
     }
 
 

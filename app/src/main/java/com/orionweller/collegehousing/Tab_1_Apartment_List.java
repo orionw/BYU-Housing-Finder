@@ -1,5 +1,6 @@
 package com.orionweller.collegehousing;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -10,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import static com.orionweller.collegehousing.TabView.c;
+import static com.orionweller.collegehousing.ApartmentTabView.c;
 
 public class Tab_1_Apartment_List extends Fragment implements RecyclerViewAdapter.ItemClickListener {
 
@@ -44,5 +45,8 @@ public class Tab_1_Apartment_List extends Fragment implements RecyclerViewAdapte
         // says what you clicked on
         Toast.makeText(getActivity(), "You clicked " + adapter.getItem(position) +
                 " on row number " + position, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), ApartmentDetails.class);
+        intent.putExtra("apartmentName", adapter.getItem(position));
+        startActivity(intent);
     }
 }

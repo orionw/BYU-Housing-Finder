@@ -28,7 +28,7 @@ public class FragmentAdapterClass extends FragmentStatePagerAdapter {
 
             case 1:
                 // map view for apartments
-                Tab_2_Activity tab2 = new Tab_2_Activity();
+                Tab_2_MapsActivity tab2 = new Tab_2_MapsActivity();
                 return tab2;
 
             default:

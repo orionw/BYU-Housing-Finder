@@ -43,4 +43,5 @@
         <item>4 Stars</item>
         <item>5 Stars</item>
     </string-array>
+    <string name="title_activity_tab_2__maps">Map</string>
 </resources>
