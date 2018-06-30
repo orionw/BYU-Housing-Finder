@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HousingList"
+            android:name=".TabView"
             android:label="Housing List">
         </activity>
     </application>

@@ -7,13 +7,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.orionweller.collegehousing.Tab_1_Activity">
+    tools:context="com.orionweller.collegehousing.Tab_1_Apartment_List">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="This Is TAB 1 Screen"
+        android:text="This Is TAB 2 Screen"
         android:gravity="center"
         android:id="@+id/textView"
         android:layout_centerVertical="true"

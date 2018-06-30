@@ -2,7 +2,6 @@ package com.orionweller.collegehousing;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -12,11 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.R.layout;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import com.orionweller.collegehousing.HousingList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -71,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String sqlQuery = get_sql_query(apartment, price, type, people, distance);
 
-                Intent intent = new Intent(MainActivity.this, HousingList.class);
+                Intent intent = new Intent(MainActivity.this, TabView.class);
                 intent.putExtra("sqlQuery", sqlQuery);
                 startActivity(intent);
             }

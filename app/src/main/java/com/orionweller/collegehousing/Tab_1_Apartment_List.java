@@ -10,23 +10,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import static com.orionweller.collegehousing.HousingList.c;
+import static com.orionweller.collegehousing.TabView.c;
 
-public class Tab_1_Activity extends Fragment implements RecyclerViewAdapter.ItemClickListener {
+public class Tab_1_Apartment_List extends Fragment implements RecyclerViewAdapter.ItemClickListener {
+
     RecyclerViewAdapter adapter;
+    RecyclerView recyclerView;
+    DividerItemDecoration mDividerItemDecoration;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.housing_scroller, container, false);
-        DividerItemDecoration mDividerItemDecoration;
-                // set up the RecyclerView
+        // get housing activity view
+        View rootView = inflater.inflate(R.layout.housing_recyclerview_tab_1, container, false);
 
-        RecyclerView recyclerView;
-        recyclerView = rootView.findViewById(R.id.rvAnimals);
+        // set up the RecyclerView
+        recyclerView = rootView.findViewById(R.id.apartment_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new RecyclerViewAdapter(getContext(), c);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
+
+        // Add the divider
         mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),1);
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
@@ -36,6 +41,8 @@ public class Tab_1_Activity extends Fragment implements RecyclerViewAdapter.Item
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(getActivity(), "You clicked " + adapter.getItem(position) + " on row number ", Toast.LENGTH_SHORT).show();
+        // says what you clicked on
+        Toast.makeText(getActivity(), "You clicked " + adapter.getItem(position) +
+                " on row number " + position, Toast.LENGTH_SHORT).show();
     }
 }

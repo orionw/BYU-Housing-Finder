@@ -11,7 +11,7 @@ public class Tab_2_Activity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.activity_tab_2, container, false);
+        return inflater.inflate(R.layout.apartment_map_tab_2, container, false);
 
     }
 }

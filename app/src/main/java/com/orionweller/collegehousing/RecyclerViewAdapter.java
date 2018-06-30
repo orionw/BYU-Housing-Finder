@@ -8,16 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     // using a cursor is kinda ugly but it saves space and reduces complexity in the long run
     private Cursor mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    private AdapterListener mListener;
 
     // data is passed into the constructor
     RecyclerViewAdapter(Context context, Cursor data) {
@@ -28,7 +24,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.recyclerview_row, parent, false);
+        View view = mInflater.inflate(R.layout.apartment_individual_row, parent, false);
         return new ViewHolder(view);
     }
 
@@ -96,9 +92,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.mClickListener = itemClickListener;
     }
 
-    public void setAdapterListener(AdapterListener listener) {
-        mListener = listener;
-    }
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
