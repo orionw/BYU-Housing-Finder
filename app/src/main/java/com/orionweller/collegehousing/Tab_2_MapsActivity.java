@@ -220,11 +220,10 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
         ArrayList<MarkerOptions> markers = new ArrayList<>();
         Log.d(TAG, "I'm in SetAllLocations: ");
         for(int i = 0; i < apartmentList.size(); i=i+2){
+            place = getLocationFromAddress(apartmentList.get(i + 1));
 
-            // if there is an address get long/lat
-            if (apartmentList.get(i) != null && apartmentList.size() > 0) {
-                place = getLocationFromAddress(apartmentList.get(i + 1));
-
+            // if there is an address get long/lat as long as nothing is null
+            if (apartmentList.get(i) != null && apartmentList.size() > 0 && place != null) {
                 MarkerOptions markerOptions = new MarkerOptions().position(place); //1
                 String titleStr = apartmentList.get(i);
                 markerOptions.title(titleStr);
