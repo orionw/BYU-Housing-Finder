@@ -3,6 +3,7 @@ package com.orionweller.collegehousing;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import com.orionweller.collegehousing.ApartmentTabView;
 
 
 public class FragmentAdapterClass extends FragmentStatePagerAdapter {

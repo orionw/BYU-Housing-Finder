@@ -1,29 +1,26 @@
 package com.orionweller.collegehousing;
 
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.LocationManager;
 import android.location.Location;
 import android.location.LocationListener;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.location.LocationAvailability;
-import com.google.android.gms.location.LocationServices;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationAvailability;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,12 +30,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import static android.support.constraint.Constraints.TAG;
 import static com.orionweller.collegehousing.ApartmentTabView.apartmentList;
-
-
-import java.io.IOException;
-import java.util.List;
 
 public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
@@ -52,7 +49,6 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_tab_2__maps, container, false);
-        //getActivity().setContentView(R.layout.activity_tab_2__maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
@@ -69,7 +65,6 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
 
     }
 
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -82,10 +77,6 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setOnMarkerClickListener(this);
     }
@@ -107,41 +98,12 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
             LatLng BYU = new LatLng(40.251782, -111.649356);
 
             if (mLastLocation != null) {    // 4
-                LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation
-                        .getLongitude());
-                placeMarkerOnMap(BYU);
-                Log.d("SetUp", "I'm in setUpMap: ");
-
-                setAllLocations();
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(BYU, 12));
+//                LatLng currentLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation
+//                        .getLongitude());
+//                placeMarkerOnMap(BYU);
             }
         }
-    }
-
-    protected void placeMarkerOnMap(LatLng location) {
-        MarkerOptions markerOptions = new MarkerOptions().position(location); //1
-        String titleStr = "BYU";
-        markerOptions.title(titleStr);
-
-        mMap.addMarker(markerOptions); //2
-    }
-
-    private String getAddress( LatLng latLng ) {
-        Geocoder geocoder = new Geocoder( getActivity() ); // 1
-        String addressText = "";
-        List<Address> addresses = null;
-        Address address = null;
-        try {
-            addresses = geocoder.getFromLocation( latLng.latitude, latLng.longitude, 1 ); // 2
-            if (null != addresses && !addresses.isEmpty()) { // 3
-                address = addresses.get(0);
-                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-                    addressText += (i == 0)?address.getAddressLine(i):("\n" + address.getAddressLine(i));
-                }
-            }
-        } catch (IOException e ) {
-        }
-        return addressText;
     }
 
     @Override
@@ -160,10 +122,62 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
         }
     }
 
+    private class GetMapInfo extends AsyncTask<Void, Void, Void>
+    {
+        ProgressDialog pdLoading = new ProgressDialog(getContext());
+        ArrayList<MarkerOptions> markers;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //this method will be running on UI thread
+            pdLoading.setMessage("\tLoading...");
+            pdLoading.show();
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+            markers = setAllLocations();
+            //this method will be running on background thread so don't update UI frome here
+            //do your long running http tasks here,you dont want to pass argument and u can access the parent class' variable url over here
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            for (MarkerOptions pin : markers) {
+                mMap.addMarker(pin);
+            }
+
+            //this method will be running on UI thread
+
+            pdLoading.dismiss();
+        }
+
+    }
+
+    // only load this data on click
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            // load data here
+            new GetMapInfo().execute();
+            setUpMap();
+        }else{
+            // fragment is no longer visible
+            Log.d(TAG, "setUserVisibleHint: not in view ");
+        }
+    }
+
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        setUpMap();
+
+
     }
 
     @Override
@@ -201,8 +215,9 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
         return false;
     }
 
-    public void setAllLocations() {
+    public ArrayList<MarkerOptions> setAllLocations() {
         LatLng place;
+        ArrayList<MarkerOptions> markers = new ArrayList<>();
         Log.d(TAG, "I'm in SetAllLocations: ");
         for(int i = 0; i < apartmentList.size(); i=i+2){
 
@@ -210,17 +225,19 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
             if (apartmentList.get(i) != null && apartmentList.size() > 0) {
                 place = getLocationFromAddress(apartmentList.get(i + 1));
 
-                // TODO find out why I'm in the ocean
                 MarkerOptions markerOptions = new MarkerOptions().position(place); //1
                 String titleStr = apartmentList.get(i);
                 markerOptions.title(titleStr);
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 Log.d("Marker", markerOptions.getPosition().toString());
-                Log.d("Marker", markerOptions.getTitle().toString());
-                mMap.addMarker(markerOptions);
+                Log.d("Marker", markerOptions.getTitle());
+                markers.add(markerOptions);
+                // moving this to post-execute
+                //mMap.addMarker(markerOptions);
                 Log.d(TAG, mMap.toString());
             }
         }
+        return markers;
     }
 
 
@@ -228,7 +245,7 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
 
         Geocoder coder = new Geocoder(getActivity());
         List<Address> address;
-        LatLng p1 = null;
+        LatLng p1;
 
         try {
             address = coder.getFromLocationName(strAddress, 5);
@@ -239,8 +256,7 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
             location.getLatitude();
             location.getLongitude();
 
-            p1 = new LatLng((double) (location.getLatitude()),
-                    (double) (location.getLongitude()));
+            p1 = new LatLng(location.getLatitude(), location.getLongitude());
 
             return p1;
         }
@@ -251,3 +267,34 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
     }
 
 }
+
+// Extra functions not used that I might use later
+
+    // from LatLong place an item on map
+//    protected void placeMarkerOnMap(LatLng location) {
+//        MarkerOptions markerOptions = new MarkerOptions().position(location); //1
+//        String titleStr = "BYU";
+//        markerOptions.title(titleStr);
+//
+//        mMap.addMarker(markerOptions); //2
+//    }
+
+//      From lat/long get address
+//    private String getAddress( LatLng latLng ) {
+//        Geocoder geocoder = new Geocoder( getActivity() ); // 1
+//        String addressText = "";
+//        List<Address> addresses;
+//        Address address;
+//        try {
+//            addresses = geocoder.getFromLocation( latLng.latitude, latLng.longitude, 1 ); // 2
+//            if (null != addresses && !addresses.isEmpty()) { // 3
+//                address = addresses.get(0);
+//                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+//                    addressText += (i == 0)?address.getAddressLine(i):("\n" + address.getAddressLine(i));
+//                }
+//            }
+//        } catch (IOException e ) {
+//        }
+//        return addressText;
+//    }
+

@@ -1,5 +1,6 @@
 package com.orionweller.collegehousing;
 
+import android.R.layout;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.R.layout;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -18,8 +18,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DataBaseHelper db;
-         Cursor apartments;
 
         final Spinner spinner_marriage = (Spinner) findViewById(R.id.marital);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -30,24 +28,20 @@ public class MainActivity extends AppCompatActivity {
         // Apply the adapter to the spinner
         spinner_marriage.setAdapter(adapter_marriage);
 
+        // same as above but another spinner
         final Spinner spinner_reviews = (Spinner) findViewById(R.id.reviews);
-        // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter_reviews = ArrayAdapter.createFromResource(this,
                 R.array.reviews_array, layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
         adapter_reviews.setDropDownViewResource(layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
         spinner_reviews.setAdapter(adapter_reviews);
-
-        db = new DataBaseHelper(this);
-        apartments = db.getApartments();
-
 
         Button btn = (Button)findViewById(R.id.search_button);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // Get all the search params
 
                 String type = spinner_marriage.getSelectedItem().toString();
 
@@ -62,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 EditText apartmentEditText = (EditText)findViewById(R.id.apartment_name);
                 String apartment      =  apartmentEditText.getText().toString();
 
-
+                // use the search params to make a query
                 String sqlQuery = get_sql_query(apartment, price, type, people, distance);
 
                 Intent intent = new Intent(MainActivity.this, ApartmentTabView.class);
@@ -74,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-        public String get_sql_query(String apartment, String price, String type, String people, String distance) {
+    public String get_sql_query(String apartment, String price, String type, String people, String distance) {
 
             // flag is used to determine where to put AND statements
             boolean andFlag = false;

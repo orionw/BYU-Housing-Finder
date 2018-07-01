@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ApartmentTabView extends AppCompatActivity {
 
@@ -43,7 +42,7 @@ public class ApartmentTabView extends AppCompatActivity {
 
         // Get list of names and addresses
 
-        apartmentList = get_list_from_query(c);
+        apartmentList = get_address_list_from_query(c);
 
         // Set up tabs
         Toolbar toolbar ;
@@ -86,8 +85,8 @@ public class ApartmentTabView extends AppCompatActivity {
         });
     }
 
-    private ArrayList<String> get_list_from_query(Cursor mCursor) {
-        // Don't think I'm going to use this code but keeping it in case for a sec
+    private ArrayList<String> get_address_list_from_query(Cursor mCursor) {
+
         ArrayList builder = new ArrayList<String>();
 
         mCursor.moveToFirst();
