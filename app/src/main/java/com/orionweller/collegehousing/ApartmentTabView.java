@@ -87,7 +87,7 @@ public class ApartmentTabView extends AppCompatActivity {
 
     private ArrayList<String> get_address_list_from_query(Cursor mCursor) {
 
-        ArrayList builder = new ArrayList<String>();
+        ArrayList<String> builder = new ArrayList<>();
 
         mCursor.moveToFirst();
         int name_index = mCursor.getColumnIndex("name");

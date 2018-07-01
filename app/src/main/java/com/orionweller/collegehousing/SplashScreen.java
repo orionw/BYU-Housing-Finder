@@ -12,17 +12,18 @@ public class SplashScreen extends Activity {
     //This class corresponds to the activity_spash XML file
     //This is just the loading up screen that says my apps name and who created it
 
-    private static int SPASH_TIME_OUT = 1500;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen_layout);
+        int SPASH_TIME_OUT = 1500;
 
         new Handler().postDelayed(new Runnable() {
 
             @Override
             public void run() {
+
                 Intent i = new Intent(SplashScreen.this, MainActivity.class);
                 startActivity(i);
                 finish();
