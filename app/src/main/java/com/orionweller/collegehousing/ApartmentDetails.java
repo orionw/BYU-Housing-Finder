@@ -3,7 +3,6 @@ package com.orionweller.collegehousing;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,14 +10,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -30,8 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.relex.circleindicator.CircleIndicator;
-
-import static android.content.ContentValues.TAG;
 
 
 public class ApartmentDetails extends Activity {
@@ -46,12 +42,6 @@ public class ApartmentDetails extends Activity {
 
     private AsyncTask mMyTask;
 
-    // Specify some url to download images
-    final URL url1 = stringToURL("http://www.freeimageslive.com/galleries/transtech/informationtechnology/pics/beige_keyboard.jpg");
-    final URL url2 = stringToURL("http://www.freeimageslive.com/galleries/transtech/informationtechnology/pics/computer_blank_screen.jpg");
-    final URL url3 = stringToURL("http://www.freeimageslive.com/galleries/transtech/informationtechnology/pics/computer_memory_dimm.jpg");
-    final URL url4 = stringToURL("http://www.freeimageslive.com/galleries/transtech/informationtechnology/pics/computer_memory.jpg");
-    final URL url5 = stringToURL("http://www.freeimageslive.com/galleries/transtech/informationtechnology/pics/ethernet_router.jpg");
     public static List<Bitmap> images;
     ViewPager viewPager;
     MyPagerAdapter myPagerAdapter;
@@ -76,56 +66,63 @@ public class ApartmentDetails extends Activity {
         }
 
         if (!hasLoaded) {
-            setContentView(R.layout.details_start);
+            setContentView(R.layout.apartment_details);
+            viewPager = (ViewPager) findViewById(R.id.viewPager);
+            CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
+            myPagerAdapter = new MyPagerAdapter(ApartmentDetails.this, apartmentName);
+            viewPager.setAdapter(myPagerAdapter);
+            indicator.setViewPager(viewPager);
+            hasLoaded = true;
+            mLLayout = (LinearLayout) findViewById(R.id.real_linear_details);
 
             // Get the application context
             mContext = getApplicationContext();
             mActivity = ApartmentDetails.this;
-            mLLayout = (LinearLayout) findViewById(R.id.detail_linear);
 
-            // Initialize the progress dialog
-            mProgressDialog = new ProgressDialog(mActivity);
-            mProgressDialog.setIndeterminate(false);
-            // Progress dialog horizontal style
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            // Progress dialog title
-            mProgressDialog.setTitle("Getting images");
-            // Progress dialog message
-            mProgressDialog.setMessage("Please wait, we are downloading the apartment's photos...");
-            mProgressDialog.setCancelable(true);
-            mMyTask = new DownloadTask()
-                    .execute(
-                            url1,
-                            url2,
-                            url3,
-                            url4,
-                            url5
-                    );
-            // Set a progress dialog dismiss listener
-            mProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                    // Cancel the AsyncTask
-                    mMyTask.cancel(false);
-                }
-            });
+//            // Initialize the progress dialog
+//            mProgressDialog = new ProgressDialog(mActivity);
+//            mProgressDialog.setIndeterminate(false);
+//            // Progress dialog horizontal style
+//            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//            // Progress dialog title
+//            mProgressDialog.setTitle("Getting images");
+//            // Progress dialog message
+//            mProgressDialog.setMessage("Please wait, we are downloading the apartment's photos...");
+//            mProgressDialog.setCancelable(true);
+//            mMyTask = new DownloadTask()
+//                    .execute(
+//                            url1,
+//                            url2,
+//                            url3,
+//                            url4,
+//                            url5
+//                    );
+//            // Set a progress dialog dismiss listener
+//            mProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                @Override
+//                public void onDismiss(DialogInterface dialogInterface) {
+//                    // Cancel the AsyncTask
+//                    mMyTask.cancel(false);
+//                }
+//            });
+
+
         } else {
             setContentView(R.layout.apartment_details);
             viewPager = (ViewPager) findViewById(R.id.viewPager);
-            CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
-            myPagerAdapter = new MyPagerAdapter(ApartmentDetails.this, images);
+            myPagerAdapter = new MyPagerAdapter(ApartmentDetails.this, apartmentName);
             viewPager.setAdapter(myPagerAdapter);
+            CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
             indicator.setViewPager(viewPager);
             mLLayout = (LinearLayout) findViewById(R.id.real_linear_details);
 
         }
     }
 
-        // Get the widget reference from XML layout
+    // Get the widget reference from XML layout
 //        mCLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
 //        mButtonDo = (Button) findViewById(R.id.btn_do);
 //        mLLayout = (LinearLayout) findViewById(R.id.ll);
-
 
 
     @Override
@@ -147,7 +144,7 @@ public class ApartmentDetails extends Activity {
     }
 
 
-//        // Initialize a new click listener for positive button widget
+    //        // Initialize a new click listener for positive button widget
 //        mButtonDo.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -179,31 +176,31 @@ public class ApartmentDetails extends Activity {
             // Loop through the urls
             int numberOfPictures = 1;
             for (int i = 0; i < numberOfPictures; i++) {
-                String strippedApartmentName = apartmentName.replaceAll("\\s+","");
-                String urlString = "http://orionweller.com/photos/" + strippedApartmentName + String.valueOf(i+1) + ".png";
-                Log.d("urlString", urlString);
-                URL currentURL = stringToURL(urlString);
+                String strippedApartmentName = apartmentName.replaceAll("\\s+", "");
+                String currentURL = "http://orionweller.com/photos/" + strippedApartmentName + String.valueOf(i + 1) + ".png";
+//                Log.d("urlString", urlString);
+//                URL currentURL = (urlString);
                 // So download the image from this url
                 try {
                     // Initialize a new http url connection
-                    connection = (HttpURLConnection) currentURL.openConnection();
-                    Log.d("Connection", connection.toString());
-
-                    // Connect the http url connection
-                    connection.connect();
-
-                    // Get the input stream from http url connection
-                    InputStream inputStream = connection.getInputStream();
-
-                    // Initialize a new BufferedInputStream from InputStream
-                    BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-
-                    // Convert BufferedInputStream to Bitmap object
-                    Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);
-                    Log.d("Bitmap is", bmp.toString());
-
-                    // Add the bitmap to list
-                    bitmaps.add(bmp);
+//                    connection = (HttpURLConnection) currentURL.openConnection();
+//                    Log.d("Connection", connection.toString());
+//
+//                    // Connect the http url connection
+//                    connection.connect();
+//
+//                    // Get the input stream from http url connection
+//                    InputStream inputStream = connection.getInputStream();
+//
+//                    // Initialize a new BufferedInputStream from InputStream
+//                    BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+//
+//                    // Convert BufferedInputStream to Bitmap object
+//                    Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);
+//                    Log.d("Bitmap is", bmp.toString());
+//
+//                    // Add the bitmap to list
+//                    bitmaps.add(bmp);
 
                     // Publish the async task progress
                     // Added 1, because index start from 0
@@ -212,7 +209,7 @@ public class ApartmentDetails extends Activity {
                         break;
                     }
 
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
                     // Disconnect the http url connection
@@ -246,9 +243,9 @@ public class ApartmentDetails extends Activity {
             images = result;
 
             setContentView(R.layout.apartment_details);
-            viewPager = (ViewPager)findViewById(R.id.viewPager);
+            viewPager = (ViewPager) findViewById(R.id.viewPager);
             CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
-            myPagerAdapter = new MyPagerAdapter(ApartmentDetails.this, images);
+            myPagerAdapter = new MyPagerAdapter(ApartmentDetails.this, apartmentName);
             viewPager.setAdapter(myPagerAdapter);
             indicator.setViewPager(viewPager);
 
@@ -261,18 +258,5 @@ public class ApartmentDetails extends Activity {
 
         }
     }
-
-
-
-
-    // Custom method to convert string to url
-    protected URL stringToURL(String urlString) {
-        try {
-            URL url = new URL(urlString);
-            return url;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }
+

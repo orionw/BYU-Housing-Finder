@@ -3,10 +3,14 @@ package com.orionweller.collegehousing;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
@@ -47,6 +51,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String apartment_price = "$" + mData.getString(price_index) + " a month";
         String apartment_distance = mData.getString(distance_index) + " miles from campus";
 
+        String strippedApartmentName = apartment_name.replaceAll("\\s+", "");
+        String urlString = "http://orionweller.com/photos/" + strippedApartmentName + "1.png";
+        Log.d("urlString", urlString);
+        Picasso.get()
+                .load(urlString)
+                .fit()
+                .centerCrop()
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.noimage)
+                .into(holder.ComplexPicture);
+
         // set the layout
         holder.ComplexName.setText(apartment_name);
         holder.ComplexPrice.setText(apartment_price);
@@ -65,12 +80,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView ComplexName;
         TextView ComplexPrice;
         TextView ComplexDistance;
+        ImageView ComplexPicture;
 
         ViewHolder(View itemView) {
             super(itemView);
             ComplexName = itemView.findViewById(R.id.title);
             ComplexPrice = itemView.findViewById(R.id.price);
             ComplexDistance = itemView.findViewById(R.id.address);
+            ComplexPicture = itemView.findViewById(R.id.apartment_picture);
             itemView.setOnClickListener(this);
         }
 
