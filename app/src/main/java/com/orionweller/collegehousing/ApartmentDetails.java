@@ -11,12 +11,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -26,6 +28,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import me.relex.circleindicator.CircleIndicator;
 
 import static android.content.ContentValues.TAG;
 
@@ -54,6 +58,7 @@ public class ApartmentDetails extends Activity {
 
     public static boolean hasLoaded = false;
     public static String lastApartment;
+    String apartmentName;
 
 
     @Override
@@ -64,7 +69,6 @@ public class ApartmentDetails extends Activity {
         }
 
         Intent intent = getIntent();
-        String apartmentName;
         apartmentName = intent.getExtras().getString("apartmentName");
         if (!lastApartment.equals(apartmentName)) {
             hasLoaded = false;
@@ -108,8 +112,10 @@ public class ApartmentDetails extends Activity {
         } else {
             setContentView(R.layout.apartment_details);
             viewPager = (ViewPager) findViewById(R.id.viewPager);
+            CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
             myPagerAdapter = new MyPagerAdapter(ApartmentDetails.this, images);
             viewPager.setAdapter(myPagerAdapter);
+            indicator.setViewPager(viewPager);
             mLLayout = (LinearLayout) findViewById(R.id.real_linear_details);
 
         }
@@ -171,12 +177,17 @@ public class ApartmentDetails extends Activity {
             List<Bitmap> bitmaps = new ArrayList<>();
 
             // Loop through the urls
-            for (int i = 0; i < count; i++) {
-                URL currentURL = urls[i];
+            int numberOfPictures = 1;
+            for (int i = 0; i < numberOfPictures; i++) {
+                String strippedApartmentName = apartmentName.replaceAll("\\s+","");
+                String urlString = "http://orionweller.com/photos/" + strippedApartmentName + String.valueOf(i+1) + ".png";
+                Log.d("urlString", urlString);
+                URL currentURL = stringToURL(urlString);
                 // So download the image from this url
                 try {
                     // Initialize a new http url connection
                     connection = (HttpURLConnection) currentURL.openConnection();
+                    Log.d("Connection", connection.toString());
 
                     // Connect the http url connection
                     connection.connect();
@@ -189,13 +200,14 @@ public class ApartmentDetails extends Activity {
 
                     // Convert BufferedInputStream to Bitmap object
                     Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);
+                    Log.d("Bitmap is", bmp.toString());
 
                     // Add the bitmap to list
                     bitmaps.add(bmp);
 
                     // Publish the async task progress
                     // Added 1, because index start from 0
-                    publishProgress((int) (((i + 1) / (float) count) * 100));
+                    publishProgress((int) (((i + 1) / (float) numberOfPictures) * 100));
                     if (isCancelled()) {
                         break;
                     }
@@ -208,7 +220,7 @@ public class ApartmentDetails extends Activity {
                 }
             }
             // Return bitmap list
-            Log.d(TAG, bitmaps.toString());
+            Log.d("Bitmap to String", bitmaps.toString());
             return bitmaps;
         }
 
@@ -235,8 +247,11 @@ public class ApartmentDetails extends Activity {
 
             setContentView(R.layout.apartment_details);
             viewPager = (ViewPager)findViewById(R.id.viewPager);
+            CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
             myPagerAdapter = new MyPagerAdapter(ApartmentDetails.this, images);
             viewPager.setAdapter(myPagerAdapter);
+            indicator.setViewPager(viewPager);
+
             hasLoaded = true;
             mLLayout = (LinearLayout) findViewById(R.id.real_linear_details);
 
