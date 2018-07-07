@@ -6,10 +6,13 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -18,16 +21,30 @@ public class ApartmentTabView extends AppCompatActivity {
     // will contain the results of the SQL query
     public static Cursor c;
     public static ArrayList<String> apartmentList;
+    public String selectQuery;
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.d("Saving apartmentlist", "onSaveInstanceState: Saving it");
+        savedInstanceState.putString("selectQuery", selectQuery);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab_layout);
 
-        Intent intent = getIntent();
-        String selectQuery;
-        selectQuery = intent.getExtras().getString("sqlQuery");
-        Log.v("sqlQuery", selectQuery);
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            selectQuery = savedInstanceState.getString("selectQuery");
+        } else {
+            Intent intent = getIntent();
+            selectQuery = intent.getExtras().getString("sqlQuery");
+            Log.v("sqlQuery", selectQuery);
+        }
+
+
 
 //         This was the old way of reading from a CSV
 //        InputStream inputStream = getResources().openRawResource(R.raw.apartments);
@@ -50,9 +67,9 @@ public class ApartmentTabView extends AppCompatActivity {
         final ViewPager viewPager ;
         FragmentAdapterClass fragmentAdapter ;
 
-        //toolbar = (Toolbar) findViewById(R.id.toolbar1);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout1);
         viewPager = (ViewPager) findViewById(R.id.pager1);
+        toolbar = (Toolbar) findViewById(R.id.toolbar1);
 
         //setSupportActionBar(toolbar);
 
@@ -65,6 +82,17 @@ public class ApartmentTabView extends AppCompatActivity {
         fragmentAdapter = new FragmentAdapterClass(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(fragmentAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Results");
+
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // back button pressed
+//                Intent intent = new Intent(ApartmentTabView.this, MainActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -84,6 +112,18 @@ public class ApartmentTabView extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     private ArrayList<String> get_address_list_from_query(Cursor mCursor) {
 

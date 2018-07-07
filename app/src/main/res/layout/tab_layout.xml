@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="com.orionweller.collegehousing.ApartmentTabView">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.orionweller.collegehousing.ApartmentTabView">
 
-<!--<android.support.v7.widget.Toolbar-->
-    <!--android:id="@+id/toolbar1"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:background="?attr/colorPrimary"-->
-    <!--android:minHeight="?attr/actionBarSize"-->
-    <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
-    <!--/>-->
+<android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:background="?attr/colorPrimary"
+    android:minHeight="?attr/actionBarSize"
+    app:navigationIcon="?attr/homeAsUpIndicator"
+    />
 
 <android.support.design.widget.TabLayout
     android:id="@+id/tab_layout1"
@@ -23,6 +24,7 @@ tools:context="com.orionweller.collegehousing.ApartmentTabView">
     android:elevation="6dp"
     android:minHeight="?attr/actionBarSize"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
 
 <android.support.v4.view.ViewPager
     android:id="@+id/pager1"

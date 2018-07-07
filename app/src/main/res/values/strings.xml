@@ -43,5 +43,9 @@
         <item>4 Stars</item>
         <item>5 Stars</item>
     </string-array>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_tab_2__maps">Map</string>
 </resources>

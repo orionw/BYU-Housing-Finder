@@ -38,10 +38,16 @@
         </activity>
         <activity
             android:name=".ApartmentTabView"
-            android:label="Housing List"></activity>
+            android:label="Housing List">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.orionweller.collegehousing.MainActivity"/>
+        </activity>
         <activity
             android:name=".ApartmentDetails"
-            android:label="Details"></activity>
+            android:label="Details"><meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.orionweller.collegehousing.ApartmentTabView"/></activity>
         <!--<activity-->
             <!--android:name=".Tab_2_MapsActivity"-->
             <!--android:label="@string/title_activity_tab_2__maps"></activity>-->
