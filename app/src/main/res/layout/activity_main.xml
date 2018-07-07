@@ -12,7 +12,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/quad"
+    android:background="@mipmap/quad_whited"
     tools:context="com.orionweller.collegehousing.MainActivity"
     tools:layout_editor_absoluteY="25dp">
 
