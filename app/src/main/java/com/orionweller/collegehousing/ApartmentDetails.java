@@ -5,6 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -25,8 +28,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -39,6 +47,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import android.widget.TableRow.LayoutParams;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -67,6 +76,7 @@ public class ApartmentDetails extends AppCompatActivity{
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
+    private Cursor data;
 
 
     @Override
@@ -95,6 +105,16 @@ public class ApartmentDetails extends AppCompatActivity{
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
+
+            // Set up database and info
+            DataBaseHelper helper = new DataBaseHelper(this);
+            SQLiteDatabase db = helper.getReadableDatabase();
+            String query = "SELECT * FROM apartments1 WHERE name=\"" + apartmentName +"\"";
+            data = db.rawQuery(query, null);
+            Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(data));
+            initInfo();
+
+            // Set up layout stuff
             viewPager = (ViewPager) findViewById(R.id.viewPager);
             CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
             myPagerAdapter = new MyPagerAdapter(ApartmentDetails.this, apartmentName);
@@ -254,6 +274,48 @@ public class ApartmentDetails extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void initInfo(){
+        TableLayout table = (TableLayout) findViewById(R.id.table_layout);
+        List<Integer> positionList = new ArrayList<>();
+        int name_index = data.getColumnIndex("name");
+//        int tenants_index = data.getColumnIndex("tenants");
+//        int bathrooms_index = data.getColumnIndex("bathrooms");
+        int address_index = data.getColumnIndex("address");
+//        int website_index = data.getColumnIndex("website");
+//        int gender_index = data.getColumnIndex("gender");
+        int year_price_index = data.getColumnIndex("price");
+//        int fall_winter_price_index = data.getColumnIndex("fall-winter-price");
+//        int deposit_index = data.getColumnIndex("deposit");
+        ArrayList<String> nameList = new ArrayList<>();
+        nameList.add("Name:");
+        nameList.add("Address:  ");
+        nameList.add("Price:");
+
+        positionList.add(name_index);
+        positionList.add(address_index);
+        positionList.add(year_price_index);
+        data.moveToFirst();
+
+        for (int i = 0; i <positionList.size(); i++) {
+
+            TableRow row= new TableRow(this);
+            //TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+            //row.setLayoutParams(lp);
+            TextView option = new TextView(this);
+            TextView param = new TextView(this);
+            // Get name of param for table
+            option.setText(nameList.get(i));
+            // Get cursors result for table
+            param.setText(data.getString(positionList.get(i)));
+            // set table
+            row.addView(option);
+            row.addView(param);
+            table.addView(row,i+1);
+            Log.d("Table Row is", table.toString());
+            Log.d("Table  is", row.toString());
+        }
     }
 }
 

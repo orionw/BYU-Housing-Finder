@@ -6,40 +6,91 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:padding="15dp"
-        android:orientation="horizontal"
         android:id="@+id/real_linear_details"
 
         tools:context="com.orionweller.collegehousing.ApartmentDetails">
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <android.support.v4.view.ViewPager
-            android:layout_width="wrap_content"
-            android:scaleType="centerInside"
-            android:layout_height="250dp"
-            android:layout_alignTop="@id/indicator"
-            android:id="@+id/viewPager"/>
-        <me.relex.circleindicator.CircleIndicator
-            android:id="@+id/indicator"
-            android:layout_gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"/>
+            <android.support.v4.view.ViewPager
+                android:layout_width="wrap_content"
+                android:scaleType="centerInside"
+                android:layout_height="250dp"
+                android:layout_alignTop="@id/indicator"
+                android:id="@+id/viewPager"/>
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/indicator"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
         </FrameLayout>
 
 
     </LinearLayout>
+    <TableLayout
+        android:layout_below="@+id/real_linear_details"
+        android:id="@+id/table_layout"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:layout_marginRight="6dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TableRow>
+        <!--rows are dynamically inserted here-->
+        </TableRow>
+    </TableLayout>
+
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:paddingTop="15dp"
+            android:layout_below="@id/table_layout"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:id="@+id/comment_list">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add a review"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:id="@+id/add_a_comment"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:text="Reviews: "/>
+        </LinearLayout>
+        </ScrollView>
+
+    </RelativeLayout>
 
     <!-- Side navigation drawer UI -->
     <ListView
-    android:id="@+id/navListDetails"
-    android:layout_width="200dp"
-    android:layout_height="match_parent"
-    android:layout_gravity="left|start"
-    android:background="#ffeeeeee"/>
+        android:id="@+id/navListDetails"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left|start"
+        android:background="#ffeeeeee"/>
 
 
 </android.support.v4.widget.DrawerLayout>
