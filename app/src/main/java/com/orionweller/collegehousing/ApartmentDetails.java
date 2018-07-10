@@ -127,32 +127,7 @@ public class ApartmentDetails extends AppCompatActivity{
             mContext = getApplicationContext();
             mActivity = ApartmentDetails.this;
 
-//            // Initialize the progress dialog
-//            mProgressDialog = new ProgressDialog(mActivity);
-//            mProgressDialog.setIndeterminate(false);
-//            // Progress dialog horizontal style
-//            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//            // Progress dialog title
-//            mProgressDialog.setTitle("Getting images");
-//            // Progress dialog message
-//            mProgressDialog.setMessage("Please wait, we are downloading the apartment's photos...");
-//            mProgressDialog.setCancelable(true);
-//            mMyTask = new DownloadTask()
-//                    .execute(
-//                            url1,
-//                            url2,
-//                            url3,
-//                            url4,
-//                            url5
-//                    );
-//            // Set a progress dialog dismiss listener
-//            mProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                @Override
-//                public void onDismiss(DialogInterface dialogInterface) {
-//                    // Cancel the AsyncTask
-//                    mMyTask.cancel(false);
-//                }
-//            });
+            // Todo: link comments database with scrollView
 
 
         } else {
@@ -167,6 +142,15 @@ public class ApartmentDetails extends AppCompatActivity{
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
+
+            // Set up database and info
+            DataBaseHelper helper = new DataBaseHelper(this);
+            SQLiteDatabase db = helper.getReadableDatabase();
+            String query = "SELECT * FROM apartments1 WHERE name=\"" + apartmentName +"\"";
+            data = db.rawQuery(query, null);
+            Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(data));
+            initInfo();
+
             viewPager = (ViewPager) findViewById(R.id.viewPager);
             myPagerAdapter = new MyPagerAdapter(ApartmentDetails.this, apartmentName);
             viewPager.setAdapter(myPagerAdapter);
@@ -176,13 +160,6 @@ public class ApartmentDetails extends AppCompatActivity{
 
         }
     }
-
-    // Get the widget reference from XML layout
-//        mCLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
-//        mButtonDo = (Button) findViewById(R.id.btn_do);
-//        mLLayout = (LinearLayout) findViewById(R.id.ll);
-
-
 
     private void addDrawerItems() {
         String[] optionsMenu = { "Log In", "Favorites", "Settings" };
@@ -218,11 +195,6 @@ public class ApartmentDetails extends AppCompatActivity{
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        setHasOptionsMenu(true);
-//    }
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -252,6 +224,11 @@ public class ApartmentDetails extends AppCompatActivity{
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == R.id.favorites) {
+            // TODO add a favorites and link it to this
             return true;
         }
 
@@ -318,150 +295,4 @@ public class ApartmentDetails extends AppCompatActivity{
         }
     }
 }
-
-
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        if (mProgressDialog != null) {
-//            mProgressDialog.dismiss();
-//            mProgressDialog = null;
-//        }
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        if (mProgressDialog != null) {
-//            mProgressDialog.dismiss();
-//            mProgressDialog = null;
-//        }
-//    }
-//
-//
-////        // Initialize a new click listener for positive button widget
-////        mButtonDo.setOnClickListener(new View.OnClickListener() {
-////            @Override
-////            public void onClick(View view) {
-////                // Execute the async task
-////                // Don't know what they want
-////            }
-////        });
-////    }
-//    /*
-//        First parameter URL for doInBackground
-//        Second parameter Integer for onProgressUpdate
-//        Third parameter List<Bitmap> for onPostExecute
-//     */
-//private class DownloadTask extends AsyncTask<URL, Integer, List<Bitmap>> {
-//    // Before the tasks execution
-//    protected void onPreExecute() {
-//        // Display the progress dialog on async task start
-//        mProgressDialog.show();
-//        mProgressDialog.setProgress(0);
-//    }
-//
-//    // Do the task in background/non UI thread
-//    protected List<Bitmap> doInBackground(URL... urls) {
-//        int count = urls.length;
-//        //URL url = urls[0];
-//        HttpURLConnection connection = null;
-//        List<Bitmap> bitmaps = new ArrayList<>();
-//
-//        // Loop through the urls
-//        int numberOfPictures = 1;
-//        for (int i = 0; i < numberOfPictures; i++) {
-//            String strippedApartmentName = apartmentName.replaceAll("\\s+", "");
-//            String currentURL = "http://orionweller.com/photos/" + strippedApartmentName + String.valueOf(i + 1) + ".png";
-////                Log.d("urlString", urlString);
-////                URL currentURL = (urlString);
-//            // So download the image from this url
-//            try {
-//                // Initialize a new http url connection
-////                    connection = (HttpURLConnection) currentURL.openConnection();
-////                    Log.d("Connection", connection.toString());
-////
-////                    // Connect the http url connection
-////                    connection.connect();
-////
-////                    // Get the input stream from http url connection
-////                    InputStream inputStream = connection.getInputStream();
-////
-////                    // Initialize a new BufferedInputStream from InputStream
-////                    BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-////
-////                    // Convert BufferedInputStream to Bitmap object
-////                    Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);
-////                    Log.d("Bitmap is", bmp.toString());
-////
-////                    // Add the bitmap to list
-////                    bitmaps.add(bmp);
-//
-//                // Publish the async task progress
-//                // Added 1, because index start from 0
-//                publishProgress((int) (((i + 1) / (float) numberOfPictures) * 100));
-//                if (isCancelled()) {
-//                    break;
-//                }
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            } finally {
-//                // Disconnect the http url connection
-//                connection.disconnect();
-//            }
-//        }
-//        // Return bitmap list
-//        Log.d("Bitmap to String", bitmaps.toString());
-//        return bitmaps;
-//    }
-//
-//    // On progress update
-//    protected void onProgressUpdate(Integer... progress) {
-//        // Update the progress bar
-//        mProgressDialog.setProgress(progress[0]);
-//    }
-//
-//    // On AsyncTask cancelled
-//    protected void onCancelled() {
-//        mProgressDialog.dismiss();
-//        mProgressDialog = null;
-//        Snackbar.make(mCLayout, "Task Cancelled.", Snackbar.LENGTH_LONG).show();
-//    }
-//
-//    // When all async task done
-//    protected void onPostExecute(List<Bitmap> result) {
-//        // Hide the progress dialog
-//        mProgressDialog.dismiss();
-//        mProgressDialog = null;
-//
-//        images = result;
-//
-//        setContentView(R.layout.apartment_details);
-//        viewPager = (ViewPager) findViewById(R.id.viewPager);
-//        CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
-//        myPagerAdapter = new MyPagerAdapter(ApartmentDetails.this, apartmentName);
-//        viewPager.setAdapter(myPagerAdapter);
-//        indicator.setViewPager(viewPager);
-//
-//        hasLoaded = true;
-//        mLLayout = (LinearLayout) findViewById(R.id.real_linear_details);
-//
-//
-//        // Remove all views from linear layout
-//        //mLLayout.removeAllViews();
-//
-//    }
-//}
 

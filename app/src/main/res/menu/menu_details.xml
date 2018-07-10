@@ -6,8 +6,13 @@
         android:title="@string/action_settings"
         android:orderInCategory="100"
         app:showAsAction="never"/>
+    <item android:id="@+id/favorites"
+        android:title="Favorites"
+        android:orderInCategory="100"
+        android:icon="@android:drawable/btn_star"
+        app:showAsAction="ifRoom"/>
     <item android:id="@+id/back_to_list"
-        android:title="@string/action_settings"
+        android:title="Back"
         android:orderInCategory="100"
         android:src="?attr/homeAsUpIndicator"
         android:icon="@android:drawable/ic_menu_revert"
