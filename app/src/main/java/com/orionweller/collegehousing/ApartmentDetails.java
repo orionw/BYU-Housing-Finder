@@ -2,6 +2,7 @@ package com.orionweller.collegehousing;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -51,6 +52,8 @@ import android.widget.TableRow.LayoutParams;
 
 import me.relex.circleindicator.CircleIndicator;
 
+import static android.provider.Settings.NameValueTable.VALUE;
+
 
 public class ApartmentDetails extends AppCompatActivity{
 
@@ -77,6 +80,7 @@ public class ApartmentDetails extends AppCompatActivity{
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
     private Cursor data;
+    public Apartment currentApartment;
 
 
     @Override
@@ -92,6 +96,8 @@ public class ApartmentDetails extends AppCompatActivity{
             hasLoaded = false;
             lastApartment = apartmentName;
         }
+
+        currentApartment = new Apartment();
 
         if (!hasLoaded) {
             setContentView(R.layout.apartment_details);
@@ -169,7 +175,14 @@ public class ApartmentDetails extends AppCompatActivity{
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ApartmentDetails.this, "I haven't implemented this yet!", Toast.LENGTH_SHORT).show();
+                if (position ==  1) {
+                    Intent intent = new Intent(ApartmentDetails.this, Favorites.class);
+                    //TODO Clean up new.memory leaks?
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(ApartmentDetails.this, "I haven't implemented this yet!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -228,7 +241,14 @@ public class ApartmentDetails extends AppCompatActivity{
         }
 
         if (id == R.id.favorites) {
-            // TODO add a favorites and link it to this
+            DataBaseHelper helper = new DataBaseHelper(this);
+            SQLiteDatabase db = helper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("NAME", currentApartment.name);
+            values.put("PRICE", currentApartment.price);
+            values.put("DISTANCE", currentApartment.address);
+            // Inserting Row
+            db.insert("favorites", null, values);
             return true;
         }
 
@@ -274,6 +294,13 @@ public class ApartmentDetails extends AppCompatActivity{
         positionList.add(address_index);
         positionList.add(year_price_index);
         data.moveToFirst();
+
+        currentApartment.name = data.getString(positionList.get(0));
+        currentApartment.address = data.getString(positionList.get(1));
+        currentApartment.price = data.getInt(positionList.get(2));
+
+
+
 
         for (int i = 0; i <positionList.size(); i++) {
 

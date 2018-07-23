@@ -104,8 +104,13 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "I haven't implemented this yet!", Toast.LENGTH_SHORT).show();
-            }
+                if (position ==  1) {
+                    Intent intent = new Intent(MainActivity.this, Favorites.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "I haven't implemented this yet!", Toast.LENGTH_SHORT).show();
+                }            }
         });
     }
 

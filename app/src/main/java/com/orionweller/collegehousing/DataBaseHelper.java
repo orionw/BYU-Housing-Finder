@@ -3,11 +3,17 @@ package com.orionweller.collegehousing;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
-public class DataBaseHelper extends SQLiteAssetHelper {
+import static android.os.Build.ID;
+import static android.provider.Telephony.Mms.Part.TEXT;
+import static java.util.Calendar.DATE;
+import static javax.xml.xpath.XPathConstants.STRING;
+
+public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "Apartments.db";
     private static final int DATABASE_VERSION = 1;
@@ -41,4 +47,14 @@ public class DataBaseHelper extends SQLiteAssetHelper {
 
     }
 
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL("create table "+"favorites"+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, PRICE INTEGER, DISTANCE FLOAT)");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+        db.execSQL("DROP TABLE IF EXISTS "+"favorites");
+        onCreate(db);
+    }
 }
