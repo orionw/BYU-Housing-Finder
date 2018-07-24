@@ -1,5 +1,6 @@
 package com.orionweller.collegehousing;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -48,6 +49,9 @@ public class Favorites extends AppCompatActivity implements RecyclerViewAdapter.
         // get favorites activity view
         setContentView(R.layout.favorites_recyclerview);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         //  Get the database and send the query, returns a cursor
         String selectQuery = "SELECT * FROM favorites";
         DataBaseHelper helper = new DataBaseHelper(this);
@@ -71,6 +75,33 @@ public class Favorites extends AppCompatActivity implements RecyclerViewAdapter.
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
     }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        if (id == R.id.back_to_list) {
+//            //finish();
+//            //Intent intent = new Intent(this, ApartmentTabView.class);
+////            NavUtils.navigateUpFromSameTask(this);
+//
+//            Intent intent = new Intent(this,
+//                    ApartmentTabView.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//            startActivity(intent);
+//            return true;
+//        }
+//        return true;
+//    }
 
     @Override
     public void onItemClick(View view, int position) {

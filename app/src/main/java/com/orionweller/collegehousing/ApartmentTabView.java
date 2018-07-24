@@ -54,7 +54,7 @@ public class ApartmentTabView extends AppCompatActivity {
         //  Get the database and send the query, returns a cursor
         DataBaseHelper helper = new DataBaseHelper(this);
         SQLiteDatabase db = helper.getReadableDatabase();
-        db.execSQL("CREATE TABLE IF NOT EXISTS "+"favorites"+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, PRICE INTEGER, DISTANCE FLOAT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS "+"favorites"+" (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, price INTEGER, distance FLOAT)");
         c = db.rawQuery(selectQuery, null);
         Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(c));
 

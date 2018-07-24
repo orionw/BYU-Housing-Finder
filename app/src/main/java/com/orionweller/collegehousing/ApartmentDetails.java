@@ -10,27 +10,20 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
@@ -38,21 +31,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import android.widget.TableRow.LayoutParams;
 
 import me.relex.circleindicator.CircleIndicator;
-
-import static android.provider.Settings.NameValueTable.VALUE;
 
 
 public class ApartmentDetails extends AppCompatActivity{
@@ -81,7 +63,7 @@ public class ApartmentDetails extends AppCompatActivity{
     private String mActivityTitle;
     private Cursor data;
     public Apartment currentApartment;
-
+    boolean isFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +72,15 @@ public class ApartmentDetails extends AppCompatActivity{
             lastApartment = "";
         }
 
+        // if we came from apartmentList grab the name else from Favs take the last apartment name
         Intent intent = getIntent();
-        apartmentName = intent.getExtras().getString("apartmentName");
+        try {
+            apartmentName = intent.getExtras().getString("apartmentName");
+        } catch (NullPointerException error) {
+            Log.d("ApartmentDetails", "onCreate: no string");
+            apartmentName = lastApartment;
+        }
+
         if (!lastApartment.equals(apartmentName)) {
             hasLoaded = false;
             lastApartment = apartmentName;
@@ -148,6 +137,7 @@ public class ApartmentDetails extends AppCompatActivity{
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
+
 
             // Set up database and info
             DataBaseHelper helper = new DataBaseHelper(this);
@@ -229,6 +219,12 @@ public class ApartmentDetails extends AppCompatActivity{
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        initFavoritesButton(menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -241,14 +237,20 @@ public class ApartmentDetails extends AppCompatActivity{
         }
 
         if (id == R.id.favorites) {
-            DataBaseHelper helper = new DataBaseHelper(this);
-            SQLiteDatabase db = helper.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("NAME", currentApartment.name);
-            values.put("PRICE", currentApartment.price);
-            values.put("DISTANCE", currentApartment.address);
-            // Inserting Row
-            db.insert("favorites", null, values);
+            isFavorite = dataInDatabase("favorites", "NAME", currentApartment.name);
+            // if data not already in database
+            if (!isFavorite) {
+                DataBaseHelper helper = new DataBaseHelper(this);
+                SQLiteDatabase db = helper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put("NAME", currentApartment.name);
+                values.put("PRICE", currentApartment.price);
+                values.put("DISTANCE", currentApartment.address);
+                // todo add a favorites column to Database and check it or something
+                // Inserting Row
+                db.insert("favorites", null, values);
+            }
+            checkAndToggleFavorite(item);
             return true;
         }
 
@@ -320,6 +322,50 @@ public class ApartmentDetails extends AppCompatActivity{
             Log.d("Table Row is", table.toString());
             Log.d("Table  is", row.toString());
         }
+    }
+
+    public void initFavoritesButton(Menu menu) {
+        if (dataInDatabase("favorites", "NAME", currentApartment.name)) {
+            MenuItem star =  menu.findItem(R.id.favorites);
+            star.setIcon(android.R.drawable.btn_star_big_on);
+        }
+        // else it is by default off
+    }
+
+    public void checkAndToggleFavorite(MenuItem item) {
+        if (!isFavorite) {
+            isFavorite = true;
+            item.setIcon(android.R.drawable.btn_star_big_on);
+
+        } else {
+            isFavorite = false;
+            item.setIcon(android.R.drawable.btn_star_big_off);
+            deleteRow(currentApartment.name);
+
+        }
+    }
+
+    public  boolean dataInDatabase(String TableName,
+                                   String dbfield, String fieldValue) {
+        DataBaseHelper helper = new DataBaseHelper(this);
+        SQLiteDatabase sqldb = helper.getReadableDatabase();
+        String Query = "Select * from " + TableName + " where " + dbfield + " = '" + fieldValue + "'";
+        Cursor cursor = sqldb.rawQuery(Query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
+
+    public void deleteRow(String value)
+    {
+        DataBaseHelper helper = new DataBaseHelper(this);
+        SQLiteDatabase sqldb = helper.getWritableDatabase();
+        sqldb.execSQL("DELETE FROM favorites WHERE NAME='" + value + "'");
+        sqldb.close();
     }
 }
 

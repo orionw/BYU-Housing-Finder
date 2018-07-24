@@ -29,6 +29,9 @@
         <activity
             android:name=".Favorites"
             android:label="Favorites">
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.orionweller.collegehousing.ApartmentDetails"/>>
         </activity>
 
         <activity
