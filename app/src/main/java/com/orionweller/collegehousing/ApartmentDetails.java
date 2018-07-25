@@ -157,6 +157,8 @@ public class ApartmentDetails extends AppCompatActivity{
         }
     }
 
+    //TODO add a reviews button
+
     private void addDrawerItems() {
         String[] optionsMenu = { "Log In", "Favorites", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, optionsMenu);

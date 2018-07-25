@@ -1,5 +1,6 @@
 package com.orionweller.collegehousing;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
@@ -113,6 +114,4 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
-
-
 }
