@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.orionweller.collegehousing">
 
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -14,33 +13,33 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@drawable/logo_small"
         android:label="@string/app_description"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true"
         android:theme="@style/AppTheme">
-        <!--TODO delete large heap and change-->
+
+        <!-- TODO delete large heap and change -->
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
-        </activity>
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".Favorites"
             android:label="Favorites">
             <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.orionweller.collegehousing.MainActivity"/>>
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.orionweller.collegehousing.MainActivity" />
+            >
         </activity>
-
         <activity
             android:name=".SplashScreen"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -48,16 +47,18 @@
             android:label="Housing List">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.orionweller.collegehousing.MainActivity"/>
+                android:value="com.orionweller.collegehousing.MainActivity" />
         </activity>
         <activity
             android:name=".ApartmentDetails"
-            android:label="Details"><meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.orionweller.collegehousing.ApartmentTabView"/></activity>
-        <!--<activity-->
-            <!--android:name=".Tab_2_MapsActivity"-->
-            <!--android:label="@string/title_activity_tab_2__maps"></activity>-->
+            android:label="Details">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.orionweller.collegehousing.ApartmentTabView" />
+        </activity>
+        <!-- <activity -->
+        <!-- android:name=".Tab_2_MapsActivity" -->
+        <!-- android:label="@string/title_activity_tab_2__maps"></activity> -->
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -70,8 +71,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <uses-library android:name="com.google.android.maps" />
 
-        <uses-library android:name="com.google.android.maps"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

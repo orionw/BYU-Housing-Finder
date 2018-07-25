@@ -108,6 +108,10 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, Favorites.class);
                     startActivity(intent);
                 }
+                else if (position == 2) {
+                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                    startActivity(intent);
+                }
                 else {
                     Toast.makeText(MainActivity.this, "I haven't implemented this yet!", Toast.LENGTH_SHORT).show();
                 }            }
@@ -164,7 +168,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         // Activate the navigation drawer toggle
