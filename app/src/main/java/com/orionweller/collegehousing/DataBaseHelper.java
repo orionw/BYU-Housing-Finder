@@ -29,27 +29,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public Cursor getApartments() {
-
-        SQLiteDatabase db = getReadableDatabase();
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-
-        //String [] sqlSelect = {"0 _id", "FirstName", "LastName"};
-        String []  sqlSelect = {"*"};
-        String sqlTables = "Apartments1";
-
-        qb.setTables(sqlTables);
-        Cursor c = qb.query(db, sqlSelect, null, null,
-                null, null, null);
-
-        c.moveToFirst();
-        return c;
-
-    }
+//    public Cursor getApartments() {
+//
+//        SQLiteDatabase db = getReadableDatabase();
+//        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+//
+//        //String [] sqlSelect = {"0 _id", "FirstName", "LastName"};
+//        String []  sqlSelect = {"*"};
+//        String sqlTables = "apts";
+//
+//        qb.setTables(sqlTables);
+//        Cursor c = qb.query(db, sqlSelect, null, null,
+//                null, null, null);
+//
+//        c.moveToFirst();
+//        return c;
+//
+//    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table "+"favorites"+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, PRICE INTEGER, DISTANCE FLOAT)");
+        db.execSQL("create table "+"favorites"+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, RENT_SHARED_ROOM_YEAR INTEGER, DISTANCE FLOAT)");
     }
 
     @Override

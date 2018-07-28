@@ -97,18 +97,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addDrawerItems() {
-        String[] optionsMenu = { "Log In", "Favorites", "Settings" };
+        String[] optionsMenu = {"Home", "Log In", "Favorites", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, optionsMenu);
         mDrawerList.setAdapter(mAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position ==  1) {
+                if (position ==  0) {
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    // TODO or should I do nothing?
+                }
+                else if (position ==  2) {
                     Intent intent = new Intent(MainActivity.this, Favorites.class);
                     startActivity(intent);
                 }
-                else if (position == 2) {
+                else if (position == 3) {
                     Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                     startActivity(intent);
                 }
@@ -187,40 +192,40 @@ public class MainActivity extends AppCompatActivity {
             boolean andFlag = false;
 
             // base query
-            String sqlQuery = "SELECT * FROM apartments1 WHERE ";
+            String sqlQuery = "SELECT * FROM apts WHERE ";
 
             if (!TextUtils.isEmpty(apartment)) {
                 // use LIKE to get in any order and caps/not caps
-                sqlQuery += "name LIKE \'%" + apartment + "%\'";
+                sqlQuery += "Name LIKE \'%" + apartment + "%\'";
                 andFlag = true;
             }
 
             if (!TextUtils.isEmpty(price)) {
                 if (andFlag)
-                    sqlQuery += " AND price<" + price;
+                    sqlQuery += " AND Rent_shared_room_year<" + price;
                 else {
-                    sqlQuery += " price<" + price;
+                    sqlQuery += " Rent_shared_room_year<" + price;
                     andFlag = true;
                 }
             }
 
             if (!TextUtils.isEmpty(distance)) {
                 if (andFlag)
-                    sqlQuery += " AND distance<" + distance;
+                    sqlQuery += " AND Distance<" + distance;
                 else {
-                    sqlQuery += " distance<" + distance;
+                    sqlQuery += " Distance<" + distance;
                     andFlag = true;
                 }
             }
 
             if (andFlag)
-                sqlQuery += " AND type=\"" + type + "\"";
+                sqlQuery += " AND Single=\"" + type + "\"";
             else {
-                sqlQuery += " type=\"" + type + "\"";
+                sqlQuery += " Single=\"" + type + "\"";
             }
 
             if (!TextUtils.isEmpty(people)) {
-                sqlQuery += " AND people=" + people;
+                sqlQuery += " AND Tenants=" + people;
             }
 
             return sqlQuery;

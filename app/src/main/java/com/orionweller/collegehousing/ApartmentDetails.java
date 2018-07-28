@@ -75,18 +75,18 @@ public class ApartmentDetails extends AppCompatActivity{
         // if we came from apartmentList grab the name else from Favs take the last apartment name
         Intent intent = getIntent();
         try {
-            apartmentName = intent.getExtras().getString("apartmentName");
+            currentApartment = (Apartment) getIntent().getSerializableExtra("Apartment");
+            apartmentName = currentApartment.name;
         } catch (NullPointerException error) {
             Log.d("ApartmentDetails", "onCreate: no string");
             apartmentName = lastApartment;
+            currentApartment = new Apartment();
         }
 
         if (!lastApartment.equals(apartmentName)) {
             hasLoaded = false;
             lastApartment = apartmentName;
         }
-
-        currentApartment = new Apartment();
 
         if (!hasLoaded) {
             setContentView(R.layout.apartment_details);
@@ -104,7 +104,7 @@ public class ApartmentDetails extends AppCompatActivity{
             // Set up database and info
             DataBaseHelper helper = new DataBaseHelper(this);
             SQLiteDatabase db = helper.getReadableDatabase();
-            String query = "SELECT * FROM apartments1 WHERE name=\"" + apartmentName +"\"";
+            String query = "SELECT * FROM apts WHERE Name=\"" + apartmentName +"\"";
             data = db.rawQuery(query, null);
             Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(data));
             initInfo();
@@ -142,7 +142,7 @@ public class ApartmentDetails extends AppCompatActivity{
             // Set up database and info
             DataBaseHelper helper = new DataBaseHelper(this);
             SQLiteDatabase db = helper.getReadableDatabase();
-            String query = "SELECT * FROM apartments1 WHERE name=\"" + apartmentName +"\"";
+            String query = "SELECT * FROM apts WHERE Name=\"" + apartmentName +"\"";
             data = db.rawQuery(query, null);
             Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(data));
             initInfo();
@@ -160,16 +160,24 @@ public class ApartmentDetails extends AppCompatActivity{
     //TODO add a reviews button
 
     private void addDrawerItems() {
-        String[] optionsMenu = { "Log In", "Favorites", "Settings" };
+        String[] optionsMenu = {"Home", "Log In", "Favorites", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, optionsMenu);
         mDrawerList.setAdapter(mAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position ==  1) {
+                if (position ==  0) {
+                    Intent intent = new Intent(ApartmentDetails.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                else if (position ==  2) {
                     Intent intent = new Intent(ApartmentDetails.this, Favorites.class);
                     //TODO Clean up new.memory leaks?
+                    startActivity(intent);
+                }
+                else if (position == 3) {
+                    Intent intent = new Intent(ApartmentDetails.this, SettingsActivity.class);
                     startActivity(intent);
                 }
                 else {
@@ -235,19 +243,20 @@ public class ApartmentDetails extends AppCompatActivity{
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         if (id == R.id.favorites) {
-            isFavorite = dataInDatabase("favorites", "NAME", currentApartment.name);
+            isFavorite = dataInDatabase("favorites", "Name", currentApartment.name);
             // if data not already in database
             if (!isFavorite) {
                 DataBaseHelper helper = new DataBaseHelper(this);
                 SQLiteDatabase db = helper.getWritableDatabase();
                 ContentValues values = new ContentValues();
-                values.put("NAME", currentApartment.name);
-                values.put("PRICE", currentApartment.price);
-                values.put("DISTANCE", currentApartment.address);
+                values.put("Name", currentApartment.name);
+                values.put("Rent_shared_room_year", currentApartment.price);
+                values.put("Distance", currentApartment.distance);
                 // todo add a favorites column to Database and check it or something
                 // Inserting Row
                 db.insert("favorites", null, values);
@@ -257,10 +266,6 @@ public class ApartmentDetails extends AppCompatActivity{
         }
 
         if (id == R.id.back_to_list) {
-            //finish();
-            //Intent intent = new Intent(this, ApartmentTabView.class);
-//            NavUtils.navigateUpFromSameTask(this);
-
             Intent intent = new Intent(this,
                     ApartmentTabView.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -270,7 +275,7 @@ public class ApartmentDetails extends AppCompatActivity{
         }
 
         // Activate the navigation drawer toggle
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        else if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
 
@@ -280,15 +285,15 @@ public class ApartmentDetails extends AppCompatActivity{
     public void initInfo(){
         TableLayout table = (TableLayout) findViewById(R.id.table_layout);
         List<Integer> positionList = new ArrayList<>();
-        int name_index = data.getColumnIndex("name");
-//        int tenants_index = data.getColumnIndex("tenants");
-//        int bathrooms_index = data.getColumnIndex("bathrooms");
-        int address_index = data.getColumnIndex("address");
-//        int website_index = data.getColumnIndex("website");
-//        int gender_index = data.getColumnIndex("gender");
-        int year_price_index = data.getColumnIndex("price");
-//        int fall_winter_price_index = data.getColumnIndex("fall-winter-price");
-//        int deposit_index = data.getColumnIndex("deposit");
+        int name_index = data.getColumnIndex("Name");
+//        int tenants_index = data.getColumnIndex("Tenants");
+//        int bathrooms_index = data.getColumnIndex("Bathrooms");
+        int address_index = data.getColumnIndex("Address");
+//        int website_index = data.getColumnIndex("Website");
+//        int gender_index = data.getColumnIndex("Gender");
+        int year_price_index = data.getColumnIndex("Rent_shared_room_year");
+//        int fall_winter_price_index = data.getColumnIndex("Fall-winter-price");
+//        int deposit_index = data.getColumnIndex("Deposit");
         ArrayList<String> nameList = new ArrayList<>();
         nameList.add("Name:");
         nameList.add("Address:  ");

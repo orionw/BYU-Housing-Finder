@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import static com.orionweller.collegehousing.ApartmentTabView.apartmentList;
 import static com.orionweller.collegehousing.ApartmentTabView.c;
 
 public class Tab_1_Apartment_List extends Fragment implements RecyclerViewAdapter.ItemClickListener {
@@ -32,9 +33,12 @@ public class Tab_1_Apartment_List extends Fragment implements RecyclerViewAdapte
         // set up the RecyclerView
         recyclerView = rootView.findViewById(R.id.apartment_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new RecyclerViewAdapter(getContext(), c);
+        adapter = new RecyclerViewAdapter(getActivity(), c);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
+        // TODO: Get distance from getLocation from address and then apply this:
+        /*
+         */
 
         // Add the divider
         mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),1);
@@ -50,7 +54,13 @@ public class Tab_1_Apartment_List extends Fragment implements RecyclerViewAdapte
         Toast.makeText(getActivity(), "You clicked " + adapter.getItem(position) +
                 " on row number " + position, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), ApartmentDetails.class);
-        intent.putExtra("apartmentName", adapter.getItem(position));
-        startActivity(intent);
+        for (Apartment apt : apartmentList) {
+            if (adapter.getItem(position).equals(apt.name)) {
+                intent.putExtra("Apartment", apt);
+                startActivity(intent);
+            }
+        }
+//        intent.putExtra("Apartment", adapter.getItem(position));
+//        startActivity(intent);
     }
 }

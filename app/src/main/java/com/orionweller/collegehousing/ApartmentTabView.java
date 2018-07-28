@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
@@ -14,14 +17,24 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class ApartmentTabView extends AppCompatActivity {
 
     // will contain the results of the SQL query
     public static Cursor c;
-    public static ArrayList<String> apartmentList;
+    public static ArrayList<Apartment> apartmentList;
     public String selectQuery;
+    public static ArrayList<MarkerOptions> markers;
+    public static boolean pinsDoneLoading;
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -46,6 +59,7 @@ public class ApartmentTabView extends AppCompatActivity {
 
 
 
+
 //         This was the old way of reading from a CSV
 //        InputStream inputStream = getResources().openRawResource(R.raw.apartments);
 //        CSVFile csvFile = new CSVFile(inputStream);
@@ -54,13 +68,15 @@ public class ApartmentTabView extends AppCompatActivity {
         //  Get the database and send the query, returns a cursor
         DataBaseHelper helper = new DataBaseHelper(this);
         SQLiteDatabase db = helper.getReadableDatabase();
-        db.execSQL("CREATE TABLE IF NOT EXISTS "+"favorites"+" (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, price INTEGER, distance FLOAT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS "+"favorites"+" (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, RENT_SHARED_ROOM_YEAR INTEGER, distance FLOAT)");
         c = db.rawQuery(selectQuery, null);
         Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(c));
 
         // Get list of names and addresses
 
         apartmentList = get_address_list_from_query(c);
+        new GetLatLngInfo().execute();
+
 
         // Set up tabs
         Toolbar toolbar ;
@@ -126,22 +142,109 @@ public class ApartmentTabView extends AppCompatActivity {
     }
 
 
-    private ArrayList<String> get_address_list_from_query(Cursor mCursor) {
+    private ArrayList<Apartment> get_address_list_from_query(Cursor mCursor) {
 
-        ArrayList<String> builder = new ArrayList<>();
+        ArrayList<Apartment> builder = new ArrayList<>();
 
         mCursor.moveToFirst();
-        int name_index = mCursor.getColumnIndex("name");
-        int address_index = mCursor.getColumnIndex("address");
+        int name_index = mCursor.getColumnIndex("Name");
+        int address_index = mCursor.getColumnIndex("Address");
+        int longitude_index = mCursor.getColumnIndex("Longitude");
+        int latitude_index = mCursor.getColumnIndex("Latitude");
 
         while(!mCursor.isAfterLast()) {
-            builder.add(mCursor.getString(name_index)); //add the item
-            builder.add(mCursor.getString(address_index)); //add the item
+            builder.add(new Apartment(mCursor.getString(name_index), mCursor.getString(address_index),
+                    mCursor.getString(latitude_index), mCursor.getString(longitude_index))); //add the apartment object
             mCursor.moveToNext();
         }
         Log.d("array to list", builder.toString());
         return builder;
     }
+
+
+
+    public ArrayList<MarkerOptions> setAllLocations() {
+        LatLng place;
+        ArrayList<MarkerOptions> markers = new ArrayList<>();
+        Log.d(TAG, "I'm in SetAllLocations: ");
+        for(int i = 0; i < apartmentList.size(); i += 1){
+            place = new LatLng(Double.parseDouble(apartmentList.get(i).latitude), Double.parseDouble(apartmentList.get(i).longitude));
+
+
+            // if there is an address get long/lat as long as nothing is null
+            if (apartmentList.get(i) != null && apartmentList.size() > 0 && place != null) {
+                MarkerOptions markerOptions = new MarkerOptions().position(place); //1
+                String titleStr = apartmentList.get(i).name;
+                markerOptions.title(titleStr);
+                Log.d("Marker", markerOptions.getPosition().toString());
+                Log.d("Marker", markerOptions.getTitle());
+                markers.add(markerOptions);
+                // moving this to post-execute
+                //mMap.addMarker(markerOptions);
+//                Log.d(TAG, mMap.toString());
+            }
+        }
+        return markers;
+    }
+
+    public class GetLatLngInfo extends AsyncTask<Void, Void, Void>
+    {
+//        ProgressDialog pdLoading = new ProgressDialog(getContext());
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //this method will be running on UI thread
+//            pdLoading.setMessage("\tLoading...");
+//            pdLoading.show();
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+            markers = setAllLocations();
+            //this method will be running on background thread so don't update UI frome here
+            //do your long running http tasks here,you dont want to pass argument and u can access the parent class' variable url over here
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            pinsDoneLoading = true;
+            //this method will be running on UI thread
+
+//            pdLoading.dismiss();
+        }
+
+    }
+
+//    public LatLng getLocationFromAddress(String strAddress){
+//
+//        Geocoder coder = new Geocoder(this);
+//        List<Address> address;
+//        LatLng p1;
+//
+//        try {
+//            address = coder.getFromLocationName(strAddress, 5);
+//            if (address == null) {
+//                return null;
+//            }
+//            Address location = address.get(0);
+//            location.getLatitude();
+//            location.getLongitude();
+//
+//
+//            return p1;
+//        }
+//        catch (IOException e ) {
+//            Log.e(TAG, "Error getting address list");
+//        }
+//        return null;
+//    }
+
 
 
 }

@@ -36,6 +36,9 @@ import java.util.List;
 
 import static android.support.constraint.Constraints.TAG;
 import static com.orionweller.collegehousing.ApartmentTabView.apartmentList;
+import static com.orionweller.collegehousing.ApartmentTabView.markers;
+import static com.orionweller.collegehousing.ApartmentTabView.pinsDoneLoading;
+import static java.lang.Thread.sleep;
 
 public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
@@ -122,50 +125,61 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    private class GetMapInfo extends AsyncTask<Void, Void, Void>
-    {
-        ProgressDialog pdLoading = new ProgressDialog(getContext());
-        ArrayList<MarkerOptions> markers;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            //this method will be running on UI thread
-            pdLoading.setMessage("\tLoading...");
-            pdLoading.show();
-        }
-        @Override
-        protected Void doInBackground(Void... params) {
-            markers = setAllLocations();
-            //this method will be running on background thread so don't update UI frome here
-            //do your long running http tasks here,you dont want to pass argument and u can access the parent class' variable url over here
-
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            for (MarkerOptions pin : markers) {
-                mMap.addMarker(pin);
-            }
-
-            //this method will be running on UI thread
-
-            pdLoading.dismiss();
-        }
-
-    }
+//    private class GetMapInfo extends AsyncTask<Void, Void, Void>
+//    {
+//        ProgressDialog pdLoading = new ProgressDialog(getContext());
+//        ArrayList<MarkerOptions> markers;
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//
+//            //this method will be running on UI thread
+//            pdLoading.setMessage("\tLoading...");
+//            pdLoading.show();
+//        }
+//        @Override
+//        protected Void doInBackground(Void... params) {
+//            markers = setAllLocations();
+//            //this method will be running on background thread so don't update UI frome here
+//            //do your long running http tasks here,you dont want to pass argument and u can access the parent class' variable url over here
+//
+//
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Void result) {
+//            super.onPostExecute(result);
+//            for (MarkerOptions pin : markers) {
+//                mMap.addMarker(pin);
+//            }
+//
+//            //this method will be running on UI thread
+//
+//            pdLoading.dismiss();
+//        }
+//
+//    }
 
     // only load this data on click
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            ProgressDialog pdLoading = new ProgressDialog(getContext());
+            pdLoading.setMessage("\tLoading...");
+            pdLoading.show();
+            int i = 0;
+            while (!pinsDoneLoading) {
+                i += 1;
+            }
+            Log.d("Been waiting for: ",  Integer.toString(i));
             // load data here
-            new GetMapInfo().execute();
+            for (MarkerOptions pin : markers) {
+                mMap.addMarker(pin);
+            }
+            pdLoading.dismiss();
             setUpMap();
         }else{
             // fragment is no longer visible
@@ -213,56 +227,6 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
     @Override
     public boolean onMarkerClick(Marker marker) {
         return false;
-    }
-
-    public ArrayList<MarkerOptions> setAllLocations() {
-        LatLng place;
-        ArrayList<MarkerOptions> markers = new ArrayList<>();
-        Log.d(TAG, "I'm in SetAllLocations: ");
-        for(int i = 0; i < apartmentList.size(); i=i+2){
-            place = getLocationFromAddress(apartmentList.get(i + 1));
-
-            // if there is an address get long/lat as long as nothing is null
-            if (apartmentList.get(i) != null && apartmentList.size() > 0 && place != null) {
-                MarkerOptions markerOptions = new MarkerOptions().position(place); //1
-                String titleStr = apartmentList.get(i);
-                markerOptions.title(titleStr);
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                Log.d("Marker", markerOptions.getPosition().toString());
-                Log.d("Marker", markerOptions.getTitle());
-                markers.add(markerOptions);
-                // moving this to post-execute
-                //mMap.addMarker(markerOptions);
-                Log.d(TAG, mMap.toString());
-            }
-        }
-        return markers;
-    }
-
-
-    public LatLng getLocationFromAddress(String strAddress){
-
-        Geocoder coder = new Geocoder(getActivity());
-        List<Address> address;
-        LatLng p1;
-
-        try {
-            address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
-                return null;
-            }
-            Address location = address.get(0);
-            location.getLatitude();
-            location.getLongitude();
-
-            p1 = new LatLng(location.getLatitude(), location.getLongitude());
-
-            return p1;
-        }
-        catch (IOException e ) {
-            Log.e(TAG, "Error getting address list");
-    }
-    return null;
     }
 
 }

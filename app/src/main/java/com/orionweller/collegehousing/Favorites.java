@@ -85,20 +85,20 @@ public class Favorites extends AppCompatActivity implements RecyclerViewAdapter.
         // set up the RecyclerView
         recyclerView = this.findViewById(R.id.favorites_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecyclerViewAdapter(this, favoritesData);
+        adapter = new RecyclerViewAdapter(Favorites.this, favoritesData);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
         // Add the divider
-        mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),1);
+        mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), 1);
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
         final SwipeController swipeController = new SwipeController(new SwipeControllerActions() {
             @Override
             public void onRightClicked(int position) {
                 favoritesData.moveToPosition((position));
-                int name_index = favoritesData.getColumnIndex("name");
-                String name =  favoritesData.getString(name_index);
+                int name_index = favoritesData.getColumnIndex("Name");
+                String name = favoritesData.getString(name_index);
 
                 DataBaseHelper helper = new DataBaseHelper(Favorites.this);
                 SQLiteDatabase sqldatabase = helper.getWritableDatabase();
@@ -123,6 +123,15 @@ public class Favorites extends AppCompatActivity implements RecyclerViewAdapter.
                 swipeController.onDraw(c);
             }
         });
+    }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            if (item.getItemId() == android.R.id.home) { // Press Back Icon
+                finish();
+            }
+            return super.onOptionsItemSelected(item);
+        }
 
 
 //            @Override
@@ -164,11 +173,6 @@ public class Favorites extends AppCompatActivity implements RecyclerViewAdapter.
 //        };
 //        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
 //        itemTouchHelper.attachToRecyclerView(recyclerView); //set swipe to recylcerview
-
-
-
-
-    }
 
 //    /**
 //     * callback when recycler view is swiped

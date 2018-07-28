@@ -1,0 +1,10 @@
+<resources>
+    <string-array name="appSettingsLanguageListArray">
+        <item>English</item>
+    </string-array>
+
+    <string-array name="appSettingsLanguageListValues">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+</resources>

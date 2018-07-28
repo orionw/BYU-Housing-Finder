@@ -3,7 +3,9 @@ package com.orionweller.collegehousing;
 import android.content.ClipData;
 import android.content.Context;
 import android.database.Cursor;
+import android.location.Location;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -42,15 +45,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         //  Move the cursor to the current row
         mData.moveToPosition(position);
 
-        // find the index of the columns we need
-        int name_index = mData.getColumnIndex("name");
-        int price_index = mData.getColumnIndex("price");
-        int distance_index = mData.getColumnIndex("distance");
+        int name_index = mData.getColumnIndex("Name");
 
-        // get the info we need
         String apartment_name = mData.getString(name_index);
-        String apartment_price = "$" + mData.getString(price_index) + " a month";
-        String apartment_distance = mData.getString(distance_index) + " miles from campus";
 
         String strippedApartmentName = apartment_name.replaceAll("\\s+", "");
         String urlString = "http://orionweller.com/photos/" + strippedApartmentName + "1.png";
@@ -63,10 +60,69 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .error(R.drawable.noimage)
                 .into(holder.ComplexPicture);
 
+        // find the index of the columns we need
+        // in Tab_1_list
+        try {
+            int longitude_index = mData.getColumnIndex("Longitude");
+            int latitude_index = mData.getColumnIndex("Latitude");
+            double latitude = Double.parseDouble(mData.getString(latitude_index));
+            double longitude = Double.parseDouble(mData.getString(longitude_index));
+            // get location and distance info
+            Location BYU = new Location("");
+            BYU.setLatitude(40.2518);
+            BYU.setLongitude(-111.6493);
+
+            Location currentLocation = new Location("");
+            currentLocation.setLatitude(latitude);
+            currentLocation.setLongitude(longitude);
+
+            double metersToMilesConvert = 0.000621371;
+            double distanceInMeters = currentLocation.distanceTo(BYU) * metersToMilesConvert;
+            String apartment_distance = String.format("%.2f", distanceInMeters) + " miles from campus";
+            holder.ComplexDistance.setText(apartment_distance);
+
+        }
+        // if in Favorites
+        catch(IllegalStateException error) {
+            int distance_index = mData.getColumnIndex("Distance");
+            if (distance_index == -1) {
+                distance_index = mData.getColumnIndex("distance");
+            }
+            double distanceInMeters = Double.parseDouble(mData.getString(distance_index));
+            String apartment_distance = String.format("%.2f", distanceInMeters) + " miles from campus";
+            holder.ComplexDistance.setText(apartment_distance);
+        }
+
+        // get price info (TODO refactor this)
+        int price_index = mData.getColumnIndex("Rent_shared_room_year");
+        String apartment_price = "$" + mData.getString(price_index) + " a month";
+
+        if (TextUtils.isEmpty(mData.getString(price_index))){
+            price_index = mData.getColumnIndex("Rent_private_room_year");
+            apartment_price = "$" + mData.getString(price_index) + " a month";
+        }
+
+        if (TextUtils.isEmpty(mData.getString(price_index))){
+            price_index = mData.getColumnIndex("Rent_shared_room_fall_winter");
+            apartment_price = "$" + mData.getString(price_index) + " a month";
+
+        }
+        if (TextUtils.isEmpty(mData.getString(price_index))){
+            price_index = mData.getColumnIndex("Rent_private_room_fall_winter");
+            apartment_price = "$" + mData.getString(price_index) + " a month";
+        }
+        if (TextUtils.isEmpty(mData.getString(price_index))) {
+            price_index = mData.getColumnIndex("price");
+            apartment_price = "$" + mData.getString(price_index) + " a month";
+        }
+
+
+        // get the info we need
+
+
         // set the layout
         holder.ComplexName.setText(apartment_name);
         holder.ComplexPrice.setText(apartment_price);
-        holder.ComplexDistance.setText(apartment_distance);
     }
 
     // total number of rows
@@ -101,7 +157,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // convenience method for getting data at click position
     String getItem(int id) {
         mData.moveToPosition((id));
-        int name_index = mData.getColumnIndex("name");
+        int name_index = mData.getColumnIndex("Name");
         return mData.getString(name_index);
     }
 
