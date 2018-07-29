@@ -3,7 +3,6 @@ package com.orionweller.collegehousing;
 import android.R.layout;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -57,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
         spinner_marriage.setAdapter(adapter_marriage);
 
         // same as above but another spinner
-        final Spinner spinner_reviews = (Spinner) findViewById(R.id.reviews);
+        final Spinner spinner_reviews = (Spinner) findViewById(R.id.gender);
         ArrayAdapter<CharSequence> adapter_reviews = ArrayAdapter.createFromResource(this,
-                R.array.reviews_array, layout.simple_spinner_item);
+                R.array.gender_array, layout.simple_spinner_item);
         adapter_reviews.setDropDownViewResource(layout.simple_spinner_dropdown_item);
         spinner_reviews.setAdapter(adapter_reviews);
 
@@ -73,19 +72,19 @@ public class MainActivity extends AppCompatActivity {
 
                 String type = spinner_marriage.getSelectedItem().toString();
 
-                String people = spinner_reviews.getSelectedItem().toString();
+                String gender = spinner_reviews.getSelectedItem().toString();
 
                 EditText priceEditText = (EditText)findViewById(R.id.price);
                 String price      =  priceEditText.getText().toString();
 
-                EditText distanceEditText = (EditText)findViewById(R.id.distance);
-                String distance      =  distanceEditText.getText().toString();
+                EditText tenantsEditText = (EditText)findViewById(R.id.tenants);
+                String tenants      =  tenantsEditText.getText().toString();
 
                 EditText apartmentEditText = (EditText)findViewById(R.id.apartment_name);
                 String apartment      =  apartmentEditText.getText().toString();
 
                 // use the search params to make a query
-                String sqlQuery = get_sql_query(apartment, price, type, people, distance);
+                String sqlQuery = get_sql_query(apartment, price, type, gender, tenants);
 
                 Intent intent = new Intent(MainActivity.this, ApartmentTabView.class);
                 intent.putExtra("sqlQuery", sqlQuery);
@@ -186,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public String get_sql_query(String apartment, String price, String type, String people, String distance) {
+    public String get_sql_query(String apartment, String price, String type, String gender, String tenants) {
 
             // flag is used to determine where to put AND statements
             boolean andFlag = false;
@@ -209,11 +208,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            if (!TextUtils.isEmpty(distance)) {
+            if (!TextUtils.isEmpty(tenants)) {
                 if (andFlag)
-                    sqlQuery += " AND Distance<" + distance;
+                    sqlQuery += " AND Tenants=" + tenants;
                 else {
-                    sqlQuery += " Distance<" + distance;
+                    sqlQuery += " Tenants=" + tenants;
                     andFlag = true;
                 }
             }
@@ -224,8 +223,8 @@ public class MainActivity extends AppCompatActivity {
                 sqlQuery += " Single=\"" + type + "\"";
             }
 
-            if (!TextUtils.isEmpty(people)) {
-                sqlQuery += " AND Tenants=" + people;
+            if (!TextUtils.isEmpty(gender)) {
+                sqlQuery += " AND " + gender + " =\"TRUE\"";
             }
 
             return sqlQuery;

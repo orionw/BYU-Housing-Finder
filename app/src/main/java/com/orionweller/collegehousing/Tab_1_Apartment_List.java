@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import static com.orionweller.collegehousing.ApartmentTabView.apartmentList;
@@ -56,6 +58,10 @@ public class Tab_1_Apartment_List extends Fragment implements RecyclerViewAdapte
         Intent intent = new Intent(getActivity(), ApartmentDetails.class);
         for (Apartment apt : apartmentList) {
             if (adapter.getItem(position).equals(apt.name)) {
+                // get the price from the edit text
+                TextView editTextPrice = (TextView)getActivity().findViewById(R.id.price);
+                apt.price = Integer.valueOf(editTextPrice.getText().toString().substring(1,4));
+
                 intent.putExtra("Apartment", apt);
                 startActivity(intent);
             }

@@ -306,7 +306,7 @@ public class ApartmentDetails extends AppCompatActivity{
 
         currentApartment.name = data.getString(positionList.get(0));
         currentApartment.address = data.getString(positionList.get(1));
-        currentApartment.price = data.getInt(positionList.get(2));
+        currentApartment.price = currentApartment.price;
 
 
 

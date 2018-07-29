@@ -43,6 +43,17 @@ public class Apartment implements Serializable {
         latitude = mLatitude;
         longitude = mLongitude;
 
+        // get location and distance info
+        Location BYU = new Location("");
+        BYU.setLatitude(40.2518);
+        BYU.setLongitude(-111.6493);
+
+        Location currentLocation = new Location("");
+        currentLocation.setLatitude(Double.parseDouble(latitude));
+        currentLocation.setLongitude(Double.parseDouble(longitude));
+
+        distance = currentLocation.distanceTo(BYU) * metersToMilesConvert;
+
     }
 
     Apartment(){

@@ -7,14 +7,16 @@
     <string name="marriage">Type</string>
     <string name="distance"><font size="13">Distance</font></string>
     <string name="price"><font size="13">Price</font></string>
-    <string name="reviews"><font size="15">Reviews</font></string>
+    <string name="gender"><font size="15">Gender</font></string>
+    <string name="tenants"><font size="13">Tenants</font></string>
     <string name="search"><font size="15">Search</font></string>
+    <string name="search_favorites"><font size="13">Search Favorites</font></string>
     <string name="search_keywords"><font size="18">Apartment Name</font></string>
 
 
     <string-array name="married_array">
-        <item>single</item>
-        <item>married</item>
+        <item>Single</item>
+        <item>Married</item>
     </string-array>
     <string-array name="Price_Array">
         <item>300</item>
@@ -36,13 +38,10 @@
         <item>.7</item>
         <item>.8</item>
     </string-array>
-    <string-array name="reviews_array">
-        <item></item>
-        <item>1 Stars</item>
-        <item>2 Stars</item>
-        <item>3 Stars</item>
-        <item>4 Stars</item>
-        <item>5 Stars</item>
+    <string-array name="gender_array">
+        <item><font size="12">Gender: </font></item>
+        <item><font size="12">Men</font></item>
+        <item><font size="12">Women</font></item>
     </string-array>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

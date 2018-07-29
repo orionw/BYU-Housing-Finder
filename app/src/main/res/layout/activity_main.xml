@@ -31,8 +31,8 @@
             app:layout_constraintVertical_bias="0.05" />
 
         <EditText
-            android:hint="@string/distance"
-            android:id="@+id/distance"
+            android:hint="@string/tenants"
+            android:id="@+id/tenants"
             android:layout_width="72dp"
             android:layout_height="38dp"
             android:layout_marginEnd="8dp"
@@ -43,7 +43,7 @@
             android:background="#FFFFFF"
             android:padding="10dp"
             android:inputType="numberDecimal"
-            android:prompt="@string/distance"
+            android:prompt="@string/tenants"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/marital"
             app:layout_constraintStart_toEndOf="@+id/price"
@@ -63,7 +63,7 @@
             android:inputType="numberSigned"
             android:prompt="@string/price"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/reviews"
+            app:layout_constraintStart_toEndOf="@+id/gender"
             app:layout_constraintTop_toBottomOf="@+id/apartment_name"
             app:layout_constraintVertical_bias="0.05" />
 
@@ -103,19 +103,33 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
-            android:id="@+id/reviews"
-            android:hint="@string/reviews"
+            android:id="@+id/gender"
+            android:hint="@string/gender"
             android:spinnerMode="dialog"
             android:layout_width="64dp"
             android:layout_height="38dp"
             android:layout_marginTop="8dp"
             android:background="#FFFFFF"
             android:padding="10dp"
-            android:prompt="@string/reviews"
+            android:prompt="@string/gender"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/apartment_name"
             app:layout_constraintTop_toBottomOf="@+id/apartment_name"
             app:layout_constraintVertical_bias="0.05" />
+
+
+        <Button
+            android:id="@+id/search_favorites"
+            android:hint="@string/search_favorites"
+            android:layout_width="81dp"
+            android:layout_height="59dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="200dp"
+            android:padding="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"/>
 
     </android.support.constraint.ConstraintLayout>
 
