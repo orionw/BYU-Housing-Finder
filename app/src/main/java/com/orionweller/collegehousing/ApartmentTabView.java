@@ -1,5 +1,6 @@
 package com.orionweller.collegehousing;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -57,7 +58,9 @@ public class ApartmentTabView extends AppCompatActivity {
             Log.v("sqlQuery", selectQuery);
         }
 
-
+//        ProgressDialog pdLoading = new ProgressDialog(this);
+//        pdLoading.setMessage("\tLoading...");
+//        pdLoading.show();
 
 
 //         This was the old way of reading from a CSV
@@ -68,7 +71,8 @@ public class ApartmentTabView extends AppCompatActivity {
         //  Get the database and send the query, returns a cursor
         DataBaseHelper helper = new DataBaseHelper(this);
         SQLiteDatabase db = helper.getReadableDatabase();
-        db.execSQL("CREATE TABLE IF NOT EXISTS "+"favorites"+" (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, RENT_SHARED_ROOM_YEAR INTEGER, distance FLOAT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS "+"favorites"+" (id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Rent_shared_room_year INTEGER, " +
+                "Latitude TEXT,  "+" Longitude TEXT, "+" Distance FLOAT)");
         c = db.rawQuery(selectQuery, null);
         Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(c));
 
@@ -101,6 +105,7 @@ public class ApartmentTabView extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Results");
+//        pdLoading.dismiss();
 
 //        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -145,17 +150,28 @@ public class ApartmentTabView extends AppCompatActivity {
     private ArrayList<Apartment> get_address_list_from_query(Cursor mCursor) {
 
         ArrayList<Apartment> builder = new ArrayList<>();
-
         mCursor.moveToFirst();
+
         int name_index = mCursor.getColumnIndex("Name");
         int address_index = mCursor.getColumnIndex("Address");
+        int price_index = mCursor.getColumnIndex("Rent_shared_room_year");
         int longitude_index = mCursor.getColumnIndex("Longitude");
         int latitude_index = mCursor.getColumnIndex("Latitude");
+        int distance_index = mCursor.getColumnIndex("Distance");
 
-        while(!mCursor.isAfterLast()) {
-            builder.add(new Apartment(mCursor.getString(name_index), mCursor.getString(address_index),
-                    mCursor.getString(latitude_index), mCursor.getString(longitude_index))); //add the apartment object
+
+        try {
+            while (!mCursor.isAfterLast()) {
+                builder.add(new Apartment(mCursor.getString(name_index), mCursor.getString(address_index),
+                        mCursor.getString(latitude_index), mCursor.getString(longitude_index))); //add the apartment object
+                mCursor.moveToNext();
+            }
+        } catch (IllegalStateException NoLongandLat) {
+            builder.add(new Apartment(mCursor.getString(name_index), mCursor.getInt(price_index),
+                            mCursor.getString(latitude_index), mCursor.getString(longitude_index),
+                    Double.parseDouble(mCursor.getString(distance_index))));
             mCursor.moveToNext();
+
         }
         Log.d("array to list", builder.toString());
         return builder;

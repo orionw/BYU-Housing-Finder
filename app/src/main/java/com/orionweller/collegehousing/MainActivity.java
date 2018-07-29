@@ -62,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
         adapter_reviews.setDropDownViewResource(layout.simple_spinner_dropdown_item);
         spinner_reviews.setAdapter(adapter_reviews);
 
-        Button btn = (Button)findViewById(R.id.search_button);
+        Button searchBtn = (Button)findViewById(R.id.search_button);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -91,6 +91,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button favSearchButton = (Button)findViewById(R.id.search_favorites);
+
+        favSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    // Get all the search params
+                    String sqlQuery = "SELECT * FROM favorites";
+                    Intent intent = new Intent(MainActivity.this, ApartmentTabView.class);
+                    intent.putExtra("sqlQuery", sqlQuery);
+                    startActivity(intent);
+                }
+            });
+
 
 
     }

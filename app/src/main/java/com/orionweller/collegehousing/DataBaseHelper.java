@@ -49,8 +49,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table "+"favorites"+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, RENT_SHARED_ROOM_YEAR INTEGER, DISTANCE FLOAT)");
-    }
+        db.execSQL("CREATE TABLE IF NOT EXISTS "+"favorites"+" (id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Rent_shared_room_year INTEGER, " +
+                "Latitude TEXT,  "+" Longitude TEXT, "+" Distance FLOAT)");    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {

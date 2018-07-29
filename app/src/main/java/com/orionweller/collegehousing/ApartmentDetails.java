@@ -257,6 +257,9 @@ public class ApartmentDetails extends AppCompatActivity{
                 values.put("Name", currentApartment.name);
                 values.put("Rent_shared_room_year", currentApartment.price);
                 values.put("Distance", currentApartment.distance);
+                values.put("Latitude", currentApartment.latitude);
+                values.put("Longitude", currentApartment.longitude);
+
                 // todo add a favorites column to Database and check it or something
                 // Inserting Row
                 db.insert("favorites", null, values);
@@ -286,27 +289,67 @@ public class ApartmentDetails extends AppCompatActivity{
         TableLayout table = (TableLayout) findViewById(R.id.table_layout);
         List<Integer> positionList = new ArrayList<>();
         int name_index = data.getColumnIndex("Name");
-//        int tenants_index = data.getColumnIndex("Tenants");
-//        int bathrooms_index = data.getColumnIndex("Bathrooms");
+        int tenants_index = data.getColumnIndex("Tenants");
+        int bathrooms_index = data.getColumnIndex("Bathrooms");
         int address_index = data.getColumnIndex("Address");
-//        int website_index = data.getColumnIndex("Website");
-//        int gender_index = data.getColumnIndex("Gender");
+        int website_index = data.getColumnIndex("Website");
+        int phone_index = data.getColumnIndex("Phone");
+        int gender_index = data.getColumnIndex("Gender");
+        int deposit_index = data.getColumnIndex("Deposit_total");
+        int comments_index = data.getColumnIndex("Comment");
+        int airconditioning_index = data.getColumnIndex("Air_conditioning");
+        int dishwasher_index = data.getColumnIndex("Dishwasher");
+        int gym_index = data.getColumnIndex("Gym_equip");
+        int hottub_index = data.getColumnIndex("Hot_tub");
+        int otherutils_index = data.getColumnIndex("Other");
         int year_price_index = data.getColumnIndex("Rent_shared_room_year");
-//        int fall_winter_price_index = data.getColumnIndex("Fall-winter-price");
-//        int deposit_index = data.getColumnIndex("Deposit");
+        int fall_winter_price_index = data.getColumnIndex("Rent_shared_room_fall_winter");
+        int longitude_index = data.getColumnIndex("Longitude");
+        int latitude_index = data.getColumnIndex("Latitude");
+
+
+
         ArrayList<String> nameList = new ArrayList<>();
         nameList.add("Name:");
         nameList.add("Address:  ");
         nameList.add("Price:");
+        nameList.add("Bathrooms: ");
+        nameList.add("Gender:");
+        nameList.add("Tenants:");
+        nameList.add("Website:");
+        nameList.add("Phone:");
+        nameList.add("Deposit:");
+        nameList.add("Comments:");
+        nameList.add("Air Conditioning: ");
+        nameList.add("Dishwasher:");
+        nameList.add("Gym:");
+        nameList.add("Hot Tub:");
+        nameList.add("Utilities: ");
 
         positionList.add(name_index);
         positionList.add(address_index);
         positionList.add(year_price_index);
+        positionList.add(bathrooms_index);
+        positionList.add(gender_index);
+        positionList.add(tenants_index);
+        positionList.add(website_index);
+        positionList.add(phone_index);
+        positionList.add(deposit_index);
+        positionList.add(comments_index);
+        positionList.add(airconditioning_index);
+        positionList.add(dishwasher_index);
+        positionList.add(gym_index);
+        positionList.add(hottub_index);
+        positionList.add(otherutils_index);
+
         data.moveToFirst();
 
         currentApartment.name = data.getString(positionList.get(0));
         currentApartment.address = data.getString(positionList.get(1));
         currentApartment.price = currentApartment.price;
+        currentApartment.latitude = data.getString(latitude_index);
+        currentApartment.longitude = data.getString(longitude_index);
+
 
 
 
@@ -320,6 +363,7 @@ public class ApartmentDetails extends AppCompatActivity{
             TextView param = new TextView(this);
             // Get name of param for table
             option.setText(nameList.get(i));
+            Log.d("nameList", nameList.get(i));
             // Get cursors result for table
             param.setText(data.getString(positionList.get(i)));
             // set table

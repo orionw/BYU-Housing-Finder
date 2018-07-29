@@ -56,6 +56,15 @@ public class Apartment implements Serializable {
 
     }
 
+    Apartment(String mName, int mPrice, String mLatitude, String mLongitude, double mDistance) {
+        name = mName;
+        price = mPrice;
+        distance = mDistance;
+        latitude = mLatitude;
+        longitude = mLongitude;
+
+    }
+
     Apartment(){
         // do nothing
     }

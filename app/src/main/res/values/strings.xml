@@ -8,9 +8,9 @@
     <string name="distance"><font size="13">Distance</font></string>
     <string name="price"><font size="13">Price</font></string>
     <string name="gender"><font size="15">Gender</font></string>
-    <string name="tenants"><font size="13">Tenants</font></string>
+    <string name="tenants"><font size="12">Tenants</font></string>
     <string name="search"><font size="15">Search</font></string>
-    <string name="search_favorites"><font size="13">Search Favorites</font></string>
+    <string name="favorites_search"><font size="13">See favorites on a map</font></string>
     <string name="search_keywords"><font size="18">Apartment Name</font></string>
 
 
@@ -39,7 +39,7 @@
         <item>.8</item>
     </string-array>
     <string-array name="gender_array">
-        <item><font size="12">Gender: </font></item>
+        <item><font size="12"></font></item>
         <item><font size="12">Men</font></item>
         <item><font size="12">Women</font></item>
     </string-array>

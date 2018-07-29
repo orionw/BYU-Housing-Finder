@@ -35,7 +35,7 @@ public class Tab_1_Apartment_List extends Fragment implements RecyclerViewAdapte
         // set up the RecyclerView
         recyclerView = rootView.findViewById(R.id.apartment_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new RecyclerViewAdapter(getActivity(), c);
+        adapter = new RecyclerViewAdapter(getContext(), c);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         // TODO: Get distance from getLocation from address and then apply this:

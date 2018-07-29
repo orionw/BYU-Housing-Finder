@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
 
+
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -118,18 +119,17 @@
             app:layout_constraintVertical_bias="0.05" />
 
 
-        <Button
-            android:id="@+id/search_favorites"
-            android:hint="@string/search_favorites"
-            android:layout_width="81dp"
-            android:layout_height="59dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="200dp"
-            android:padding="10dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"/>
+    <Button
+        android:id="@+id/search_favorites"
+        android:layout_width="113dp"
+        android:layout_height="96dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:hint="@string/favorites_search"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
