@@ -38,9 +38,6 @@ public class Tab_1_Apartment_List extends Fragment implements RecyclerViewAdapte
         adapter = new RecyclerViewAdapter(getContext(), c);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
-        // TODO: Get distance from getLocation from address and then apply this:
-        /*
-         */
 
         // Add the divider
         mDividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),1);
