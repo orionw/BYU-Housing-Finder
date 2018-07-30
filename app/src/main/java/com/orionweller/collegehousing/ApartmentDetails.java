@@ -260,7 +260,6 @@ public class ApartmentDetails extends AppCompatActivity{
                 values.put("Latitude", currentApartment.latitude);
                 values.put("Longitude", currentApartment.longitude);
 
-                // todo add a favorites column to Database and check it or something
                 // Inserting Row
                 db.insert("favorites", null, values);
             }
@@ -320,7 +319,7 @@ public class ApartmentDetails extends AppCompatActivity{
         nameList.add("Phone:");
         nameList.add("Deposit:");
         nameList.add("Comments:");
-        nameList.add("Air Conditioning: ");
+        nameList.add("Air Conditioning:  ");
         nameList.add("Dishwasher:");
         nameList.add("Gym:");
         nameList.add("Hot Tub:");
@@ -365,7 +364,7 @@ public class ApartmentDetails extends AppCompatActivity{
             option.setText(nameList.get(i));
             Log.d("nameList", nameList.get(i));
             // Get cursors result for table
-            param.setText(data.getString(positionList.get(i)));
+            param.setText(checkParams(positionList, i));
             // set table
             row.addView(option);
             row.addView(param);
@@ -373,6 +372,18 @@ public class ApartmentDetails extends AppCompatActivity{
             Log.d("Table Row is", table.toString());
             Log.d("Table  is", row.toString());
         }
+    }
+
+    public String checkParams(List<Integer> positionList, int i) {
+        // if param is a utility return true
+        String param = data.getString(positionList.get(i));
+        if (param.length() == 1) {
+            if (param.equals("A") || param.equals("D") || param.equals("G") || param.equals("H") ||
+                    param.equals("S") || param.equals("T") ) {
+                param = "True";
+            }
+        }
+        return param;
     }
 
     public void initFavoritesButton(Menu menu) {

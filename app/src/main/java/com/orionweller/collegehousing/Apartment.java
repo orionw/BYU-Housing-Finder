@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Apartment implements Serializable {
-    // TODO implement a class t hold stuff
     public String name;
     public Integer price;
     public String address;
