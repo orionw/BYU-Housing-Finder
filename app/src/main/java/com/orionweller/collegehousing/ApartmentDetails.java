@@ -75,6 +75,7 @@ public class ApartmentDetails extends AppCompatActivity{
         // if we came from apartmentList grab the name else from Favs take the last apartment name
         Intent intent = getIntent();
         try {
+            // TODO: fix favorites pricing bug and starting favs bug
             currentApartment = (Apartment) getIntent().getSerializableExtra("Apartment");
             apartmentName = currentApartment.name;
         } catch (NullPointerException error) {
@@ -304,7 +305,6 @@ public class ApartmentDetails extends AppCompatActivity{
         int latitude_index = data.getColumnIndex("Latitude");
 
 
-
         ArrayList<String> nameList = new ArrayList<>();
         nameList.add("Name:");
         nameList.add("Address:  ");
@@ -342,12 +342,9 @@ public class ApartmentDetails extends AppCompatActivity{
 
         currentApartment.name = data.getString(positionList.get(0));
         currentApartment.address = data.getString(positionList.get(1));
-        currentApartment.price = Integer.getInteger(RecyclerViewAdapter.getPriceInfo(data));
+//        currentApartment.price = Integer.getInteger(RecyclerViewAdapter.getPriceInfo(data));
         currentApartment.latitude = data.getString(latitude_index);
         currentApartment.longitude = data.getString(longitude_index);
-
-
-
 
 
         for (int i = 0; i <positionList.size(); i++) {
@@ -380,9 +377,9 @@ public class ApartmentDetails extends AppCompatActivity{
                 param = "True";
             }
         }
-        if (paramName.equals("Price:")) {
-            param = RecyclerViewAdapter.getPriceInfo(data);
-        }
+//        if (paramName.equals("Price:")) {
+//            param = RecyclerViewAdapter.getPriceInfo(data);
+//        }
         return param;
     }
 
