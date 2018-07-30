@@ -63,7 +63,5 @@ public class Tab_1_Apartment_List extends Fragment implements RecyclerViewAdapte
                 startActivity(intent);
             }
         }
-//        intent.putExtra("Apartment", adapter.getItem(position));
-//        startActivity(intent);
     }
 }

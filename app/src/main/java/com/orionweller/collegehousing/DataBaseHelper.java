@@ -29,24 +29,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-//    public Cursor getApartments() {
-//
-//        SQLiteDatabase db = getReadableDatabase();
-//        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-//
-//        //String [] sqlSelect = {"0 _id", "FirstName", "LastName"};
-//        String []  sqlSelect = {"*"};
-//        String sqlTables = "apts";
-//
-//        qb.setTables(sqlTables);
-//        Cursor c = qb.query(db, sqlSelect, null, null,
-//                null, null, null);
-//
-//        c.moveToFirst();
-//        return c;
-//
-//    }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS "+"favorites"+" (id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Rent_shared_room_year INTEGER, " +

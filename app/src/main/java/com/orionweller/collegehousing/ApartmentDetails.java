@@ -157,8 +157,6 @@ public class ApartmentDetails extends AppCompatActivity{
         }
     }
 
-    //TODO add a reviews button
-
     private void addDrawerItems() {
         String[] optionsMenu = {"Home", "Log In", "Favorites", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, optionsMenu);
@@ -173,7 +171,6 @@ public class ApartmentDetails extends AppCompatActivity{
                 }
                 else if (position ==  2) {
                     Intent intent = new Intent(ApartmentDetails.this, Favorites.class);
-                    //TODO Clean up new.memory leaks?
                     startActivity(intent);
                 }
                 else if (position == 3) {
@@ -345,7 +342,7 @@ public class ApartmentDetails extends AppCompatActivity{
 
         currentApartment.name = data.getString(positionList.get(0));
         currentApartment.address = data.getString(positionList.get(1));
-        currentApartment.price = currentApartment.price;
+        currentApartment.price = Integer.getInteger(RecyclerViewAdapter.getPriceInfo(data));
         currentApartment.latitude = data.getString(latitude_index);
         currentApartment.longitude = data.getString(longitude_index);
 
@@ -364,7 +361,7 @@ public class ApartmentDetails extends AppCompatActivity{
             option.setText(nameList.get(i));
             Log.d("nameList", nameList.get(i));
             // Get cursors result for table
-            param.setText(checkParams(positionList, i));
+            param.setText(checkParams(nameList.get(i), positionList, i));
             // set table
             row.addView(option);
             row.addView(param);
@@ -374,7 +371,7 @@ public class ApartmentDetails extends AppCompatActivity{
         }
     }
 
-    public String checkParams(List<Integer> positionList, int i) {
+    public String checkParams(String paramName, List<Integer> positionList, int i) {
         // if param is a utility return true
         String param = data.getString(positionList.get(i));
         if (param.length() == 1) {
@@ -382,6 +379,9 @@ public class ApartmentDetails extends AppCompatActivity{
                     param.equals("S") || param.equals("T") ) {
                 param = "True";
             }
+        }
+        if (paramName.equals("Price:")) {
+            param = RecyclerViewAdapter.getPriceInfo(data);
         }
         return param;
     }

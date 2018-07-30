@@ -195,9 +195,6 @@ public class ApartmentTabView extends AppCompatActivity {
                 Log.d("Marker", markerOptions.getPosition().toString());
                 Log.d("Marker", markerOptions.getTitle());
                 markers.add(markerOptions);
-                // moving this to post-execute
-                //mMap.addMarker(markerOptions);
-//                Log.d(TAG, mMap.toString());
             }
         }
         return markers;

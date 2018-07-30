@@ -125,43 +125,6 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
         }
     }
 
-//    private class GetMapInfo extends AsyncTask<Void, Void, Void>
-//    {
-//        ProgressDialog pdLoading = new ProgressDialog(getContext());
-//        ArrayList<MarkerOptions> markers;
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//
-//            //this method will be running on UI thread
-//            pdLoading.setMessage("\tLoading...");
-//            pdLoading.show();
-//        }
-//        @Override
-//        protected Void doInBackground(Void... params) {
-//            markers = setAllLocations();
-//            //this method will be running on background thread so don't update UI frome here
-//            //do your long running http tasks here,you dont want to pass argument and u can access the parent class' variable url over here
-//
-//
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void result) {
-//            super.onPostExecute(result);
-//            for (MarkerOptions pin : markers) {
-//                mMap.addMarker(pin);
-//            }
-//
-//            //this method will be running on UI thread
-//
-//            pdLoading.dismiss();
-//        }
-//
-//    }
-
     // only load this data on click
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -230,34 +193,4 @@ public class Tab_2_MapsActivity extends Fragment implements OnMapReadyCallback,
     }
 
 }
-
-// Extra functions not used that I might use later
-
-    // from LatLong place an item on map
-//    protected void placeMarkerOnMap(LatLng location) {
-//        MarkerOptions markerOptions = new MarkerOptions().position(location); //1
-//        String titleStr = "BYU";
-//        markerOptions.title(titleStr);
-//
-//        mMap.addMarker(markerOptions); //2
-//    }
-
-//      From lat/long get address
-//    private String getAddress( LatLng latLng ) {
-//        Geocoder geocoder = new Geocoder( getActivity() ); // 1
-//        String addressText = "";
-//        List<Address> addresses;
-//        Address address;
-//        try {
-//            addresses = geocoder.getFromLocation( latLng.latitude, latLng.longitude, 1 ); // 2
-//            if (null != addresses && !addresses.isEmpty()) { // 3
-//                address = addresses.get(0);
-//                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-//                    addressText += (i == 0)?address.getAddressLine(i):("\n" + address.getAddressLine(i));
-//                }
-//            }
-//        } catch (IOException e ) {
-//        }
-//        return addressText;
-//    }
 

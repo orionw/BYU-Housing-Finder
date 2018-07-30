@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
-    private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
 
@@ -35,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // add a drawer to the activity
-
         mDrawerList = (ListView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
@@ -93,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Button favSearchButton = (Button)findViewById(R.id.search_favorites);
-
+        // search favorites to show them on the map
         favSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,12 +102,10 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-
-
-
     }
 
-    private void addDrawerItems() {
+    public void addDrawerItems() {
+        ArrayAdapter<String> mAdapter;
         String[] optionsMenu = {"Home", "Log In", "Favorites", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, optionsMenu);
         mDrawerList.setAdapter(mAdapter);
@@ -118,9 +114,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position ==  0) {
+                    // go to same activity and close drawer
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
                     startActivity(intent);
-                    // TODO or should I do nothing?
                 }
                 else if (position ==  2) {
                     Intent intent = new Intent(MainActivity.this, Favorites.class);
