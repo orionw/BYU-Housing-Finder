@@ -17,6 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -266,11 +267,7 @@ public class ApartmentDetails extends AppCompatActivity{
         }
 
         if (id == R.id.back_to_list) {
-            Intent intent = new Intent(this,
-                    ApartmentTabView.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
+            finish();
             return true;
         }
 
@@ -299,11 +296,8 @@ public class ApartmentDetails extends AppCompatActivity{
         int gym_index = data.getColumnIndex("Gym_equip");
         int hottub_index = data.getColumnIndex("Hot_tub");
         int otherutils_index = data.getColumnIndex("Other");
-        int year_price_index = data.getColumnIndex("Rent_shared_room_year");
-        int fall_winter_price_index = data.getColumnIndex("Rent_shared_room_fall_winter");
         int longitude_index = data.getColumnIndex("Longitude");
         int latitude_index = data.getColumnIndex("Latitude");
-
 
         ArrayList<String> nameList = new ArrayList<>();
         nameList.add("Name:");
@@ -324,7 +318,7 @@ public class ApartmentDetails extends AppCompatActivity{
 
         positionList.add(name_index);
         positionList.add(address_index);
-        positionList.add(year_price_index);
+        positionList.add(0); // price done a different way
         positionList.add(bathrooms_index);
         positionList.add(gender_index);
         positionList.add(tenants_index);
@@ -340,9 +334,26 @@ public class ApartmentDetails extends AppCompatActivity{
 
         data.moveToFirst();
 
+        int price_index = data.getColumnIndex("Rent_shared_room_year");
+
+        if (TextUtils.isEmpty(data.getString(price_index))){
+            price_index = data.getColumnIndex("Rent_private_room_year");
+        }
+
+        if (TextUtils.isEmpty(data.getString(price_index))){
+            price_index = data.getColumnIndex("Rent_shared_room_fall_winter");
+
+        }
+        if (TextUtils.isEmpty(data.getString(price_index))){
+            price_index = data.getColumnIndex("Rent_private_room_fall_winter");
+        }
+        if (TextUtils.isEmpty(data.getString(price_index))) {
+            price_index = data.getColumnIndex("price");
+        }
+
         currentApartment.name = data.getString(positionList.get(0));
         currentApartment.address = data.getString(positionList.get(1));
-//        currentApartment.price = Integer.getInteger(RecyclerViewAdapter.getPriceInfo(data));
+        currentApartment.price = Integer.valueOf(data.getString(price_index));
         currentApartment.latitude = data.getString(latitude_index);
         currentApartment.longitude = data.getString(longitude_index);
 
@@ -374,12 +385,12 @@ public class ApartmentDetails extends AppCompatActivity{
         if (param.length() == 1) {
             if (param.equals("A") || param.equals("D") || param.equals("G") || param.equals("H") ||
                     param.equals("S") || param.equals("T") ) {
-                param = "True";
+                param = "Yes";
             }
         }
-//        if (paramName.equals("Price:")) {
-//            param = RecyclerViewAdapter.getPriceInfo(data);
-//        }
+        if (paramName.equals("Price:")) {
+            param = "$" + String.valueOf(currentApartment.price) + " a month";
+        }
         return param;
     }
 

@@ -48,9 +48,6 @@
         <activity
             android:name=".ApartmentDetails"
             android:label="Details">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.orionweller.collegehousing.ApartmentTabView" />
         </activity>
         <!-- <activity -->
         <!-- android:name=".Tab_2_MapsActivity" -->

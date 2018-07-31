@@ -56,6 +56,7 @@ public class Tab_1_Apartment_List extends Fragment implements RecyclerViewAdapte
         for (Apartment apt : apartmentList) {
             if (adapter.getItem(position).equals(apt.name)) {
                 // get the price from the edit text
+                // TODO: remove this
                 TextView editTextPrice = (TextView)getActivity().findViewById(R.id.price);
                 apt.price = Integer.valueOf(editTextPrice.getText().toString().substring(1,4));
 

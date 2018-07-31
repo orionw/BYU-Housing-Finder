@@ -3,6 +3,7 @@ package com.orionweller.collegehousing;
 import android.R.layout;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -61,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
         spinner_reviews.setAdapter(adapter_reviews);
 
         Button searchBtn = (Button)findViewById(R.id.search_button);
+        DataBaseHelper helper = new DataBaseHelper(this);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("CREATE TABLE IF NOT EXISTS "+"favorites"+" (id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Rent_shared_room_year INTEGER, " +
+                "Latitude TEXT,  "+" Longitude TEXT, "+" Distance FLOAT)");
+        db.close();
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
