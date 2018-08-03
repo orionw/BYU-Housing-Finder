@@ -3,12 +3,15 @@ package com.orionweller.collegehousing;
 import android.R.layout;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +22,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import static com.orionweller.collegehousing.DataBaseHelper.DB_PATH;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -62,7 +72,24 @@ public class MainActivity extends AppCompatActivity {
         spinner_reviews.setAdapter(adapter_reviews);
 
         Button searchBtn = (Button)findViewById(R.id.search_button);
+//        checkDataBase();
+
+
+        DataBaseHelper myDbHelper = new DataBaseHelper(this);
+        myDbHelper = new DataBaseHelper(this);
+        try {
+            myDbHelper.createDataBase();
+        } catch (IOException ioe) {
+            throw new Error("Unable to create database");
+        }
+        try {
+            myDbHelper.openDataBase();
+        }catch(SQLException sqle){
+            throw sqle;
+        }
+
         DataBaseHelper helper = new DataBaseHelper(this);
+        CommonSQLiteUtilities.logDatabaseInfo(helper.getWritableDatabase());
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("CREATE TABLE IF NOT EXISTS "+"favorites"+" (id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Rent_shared_room_year INTEGER, " +
                 "Latitude TEXT,  "+" Longitude TEXT, "+" Distance FLOAT)");
@@ -109,6 +136,36 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
     }
+
+//    private boolean checkDataBase() {
+//        try {
+//            String DB_NAME = "Apartments.sqlite";
+//            String db_out_path = this.getDatabasePath(DB_NAME).toString();
+//
+//            File db_out_file = new File(db_out_path);
+//            InputStream db_in = this.getAssets().open(DB_NAME);
+//            FileOutputStream db_out = new FileOutputStream(db_out_file);
+//
+//
+//            boolean keepGoing = true;
+//
+//            byte[] buffer = new byte[20000];
+//
+//            while (keepGoing) {
+//                int bytesReturned = db_in.read(buffer);
+//
+//                if (bytesReturned > 0) {
+//                    db_out.write(buffer, 0, bytesReturned);
+//                } else {
+//                    keepGoing = false;
+//                }
+//            }
+//        } catch (java.io.IOException error) {
+//            Log.d("Error", "checkDataBase: Error");
+//        }
+//        return true;
+//    }
+
 
     public void addDrawerItems() {
         ArrayAdapter<String> mAdapter;
