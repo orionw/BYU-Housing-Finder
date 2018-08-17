@@ -50,7 +50,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String apartment_name = mData.getString(name_index);
 
         String strippedApartmentName = apartment_name.replaceAll("\\s+", "");
-        String urlString = "http://orionweller.com/photos/" + strippedApartmentName + "1.png";
+        String urlString = "http://orionweller.com/photos/" + strippedApartmentName + "1.jpg";
         Log.d("urlString", urlString);
         Picasso.get().setLoggingEnabled(true);
         Picasso.get()

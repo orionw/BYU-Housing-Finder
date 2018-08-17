@@ -42,7 +42,7 @@ public class MyPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 5;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class MyPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         String strippedApartmentName = apartmentName.replaceAll("\\s+", "");
-        String urlString = "http://orionweller.com/photos/" + strippedApartmentName + String.valueOf(position + 1) + ".png";
+        String urlString = "http://orionweller.com/photos/" + strippedApartmentName + String.valueOf(position + 1) + ".jpg";
         Log.d("urlString", urlString);
         ImageView imageView = new ImageView(context);
         Picasso.get()
