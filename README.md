@@ -2,7 +2,11 @@
 App for Student Housing
 
 https://play.google.com/store/apps/details?id=com.orionweller.collegehousing
+
+
  Are you tired of trying to wade through the mire of apartments in the Off-Campus Guide? Wish you could just see them all on a map and filter out the ones that aren't in your price range? Yeah me too! So that's why I created this app - to make that process easier for all BYU students, both married and single.
+ 
+ 
  The app was built using Java and Kotlin for the backend with a SQLite Database to store the apartment information.  Other apartment information is stored on a server for ease of use.  Apartment data has been gathered through the use of many internet searches.  If you have updated information and would like to help, please feel free to contribute.
  
  
